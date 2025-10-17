@@ -9,6 +9,7 @@ const Auth: React.FC = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showModal, setShowModal] = useState(false);
 
   const { signUp, signIn } = useAuth();
   const navigate = useNavigate();
@@ -17,16 +18,23 @@ const Auth: React.FC = () => {
     e.preventDefault();
     setLoading(true);
     setError('');
+    setShowModal(false);
 
     try {
       if (isSignUp) {
-        await signUp(email, password);
+        // Call signUp without destructuring
+        const result = await signUp(email, password);
+        // If your signUp returns an error object, handle it
+        if (result?.error) throw result.error;
+
+        // Show modal popup
+        setShowModal(true);
       } else {
         await signIn(email, password);
+        navigate('/dashboard');
       }
-      navigate('/dashboard');
     } catch (error: any) {
-      setError(error.message);
+      setError(error.message || 'Something went wrong');
     } finally {
       setLoading(false);
     }
@@ -45,8 +53,7 @@ const Auth: React.FC = () => {
           <p className="text-gray-600 mt-2">
             {isSignUp
               ? 'Start analyzing your developer profile'
-              : 'Sign in to view your developer score'
-            }
+              : 'Sign in to view your developer score'}
           </p>
         </div>
 
@@ -58,7 +65,10 @@ const Auth: React.FC = () => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Email Address
             </label>
             <div className="relative">
@@ -76,7 +86,10 @@ const Auth: React.FC = () => {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Password
             </label>
             <div className="relative">
@@ -112,16 +125,36 @@ const Auth: React.FC = () => {
 
         <div className="mt-6 text-center">
           <button
-            onClick={() => setIsSignUp(!isSignUp)}
+            onClick={() => {
+              setIsSignUp(!isSignUp);
+              setError('');
+              setShowModal(false);
+            }}
             className="text-blue-600 hover:text-blue-700 text-sm font-medium"
           >
             {isSignUp
               ? 'Already have an account? Sign in'
-              : "Don't have an account? Sign up"
-            }
+              : "Don't have an account? Sign up"}
           </button>
         </div>
       </div>
+
+      {/* Modal popup for signup confirmation */}
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded shadow-lg max-w-sm text-center">
+            <p className="text-gray-800">
+              A confirmation email has been sent. Please verify your email before signing in.
+            </p>
+            <button
+              onClick={() => setShowModal(false)}
+              className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

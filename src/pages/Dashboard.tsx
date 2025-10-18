@@ -134,9 +134,20 @@ const Dashboard: React.FC = () => {
   //       analysis_data: analysis.analysisData,
   //     };
 
-  //     const { error } = await supabase.from("reports").insert(reportData);
+  //     const { data, error } = await supabase
+  //       .from("reports")
+  //       .insert(reportData)
+  //       .select("*")
+  //       .single();
+
   //     if (error) throw error;
-  //     await loadReports();
+
+  //     // If it’s the first ever report, redirect to it
+  //     if (reportsState.length === 0 && data?.id) {
+  //       window.location.href = `/report/${data.id}`;
+  //     } else {
+  //       await loadReports();
+  //     }
   //   } catch (err) {
   //     console.error("Error generating report:", err);
   //     alert("Failed to generate report. See console for details.");
@@ -150,35 +161,27 @@ const Dashboard: React.FC = () => {
     setAnalyzing(true);
     try {
       await saveProfile();
-      const analysis = await generateFullReport(formData);
 
-      const reportData = {
-        user_id: user!.id,
-        github_score: analysis.githubScore,
-        linkedin_score: analysis.linkedinScore,
-        blog_score: analysis.blogScore,
-        coding_score: analysis.codingScore,
-        total_score: analysis.totalScore,
-        analysis_data: analysis.analysisData,
-      };
+      const response = await fetch("/api/generateReport", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: user!.id,
+          ...formData,
+        }),
+      });
 
-      const { data, error } = await supabase
-        .from("reports")
-        .insert(reportData)
-        .select("*")
-        .single();
+      const result = await response.json();
 
-      if (error) throw error;
+      if (!response.ok) throw new Error(result.error || "Failed to generate report");
 
-      // If it’s the first ever report, redirect to it
-      if (reportsState.length === 0 && data?.id) {
-        window.location.href = `/report/${data.id}`;
-      } else {
-        await loadReports();
-      }
-    } catch (err) {
+      // Optionally reload reports
+      await loadReports();
+
+      alert(`Report created! Total Score: ${result.total_score}`);
+    } catch (err: any) {
       console.error("Error generating report:", err);
-      alert("Failed to generate report. See console for details.");
+      alert("Failed to generate report.");
     } finally {
       setAnalyzing(false);
     }

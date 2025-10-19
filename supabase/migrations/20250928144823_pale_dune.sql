@@ -1,5 +1,5 @@
 /*
-  # Initial Schema for DevScore Application
+  # Initial Schema for Proofolio Application
 
   1. New Tables
     - `profiles`

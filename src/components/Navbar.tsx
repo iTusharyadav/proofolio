@@ -53,7 +53,7 @@ export default function Navbar() {
             <BarChart3 className="h-5 w-5" />
           </div>
           <span className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-            DevScore
+            Proofolio
           </span>
         </Link>
 

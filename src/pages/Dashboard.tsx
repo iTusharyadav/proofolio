@@ -118,74 +118,73 @@ const Dashboard: React.FC = () => {
     }
   };
 
-  // const generateReport = async () => {
-  //   setAnalyzing(true);
-  //   try {
-  //     await saveProfile();
-  //     const analysis = await generateFullReport(formData);
-
-  //     const reportData = {
-  //       user_id: user!.id,
-  //       github_score: analysis.githubScore,
-  //       linkedin_score: analysis.linkedinScore,
-  //       blog_score: analysis.blogScore,
-  //       coding_score: analysis.codingScore,
-  //       total_score: analysis.totalScore,
-  //       analysis_data: analysis.analysisData,
-  //     };
-
-  //     const { data, error } = await supabase
-  //       .from("reports")
-  //       .insert(reportData)
-  //       .select("*")
-  //       .single();
-
-  //     if (error) throw error;
-
-  //     // If it’s the first ever report, redirect to it
-  //     if (reportsState.length === 0 && data?.id) {
-  //       window.location.href = `/report/${data.id}`;
-  //     } else {
-  //       await loadReports();
-  //     }
-  //   } catch (err) {
-  //     console.error("Error generating report:", err);
-  //     alert("Failed to generate report. See console for details.");
-  //   } finally {
-  //     setAnalyzing(false);
-  //   }
-  // };
-
-
   const generateReport = async () => {
     setAnalyzing(true);
     try {
       await saveProfile();
+      const analysis = await generateFullReport(formData);
 
-      const response = await fetch("/api/generateReport", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          user_id: user!.id,
-          ...formData,
-        }),
-      });
+      const reportData = {
+        user_id: user!.id,
+        github_score: analysis.githubScore,
+        linkedin_score: analysis.linkedinScore,
+        blog_score: analysis.blogScore,
+        coding_score: analysis.codingScore,
+        total_score: analysis.totalScore,
+        analysis_data: analysis.analysisData,
+      };
 
-      const result = await response.json();
+      const { data, error } = await supabase
+        .from("reports")
+        .insert(reportData)
+        .select("*")
+        .single();
 
-      if (!response.ok) throw new Error(result.error || "Failed to generate report");
+      if (error) throw error;
 
-      // Optionally reload reports
-      await loadReports();
-
-      alert(`Report created! Total Score: ${result.total_score}`);
-    } catch (err: any) {
+      // If it’s the first ever report, redirect to it
+      if (reportsState.length === 0 && data?.id) {
+        window.location.href = `/report/${data.id}`;
+      } else {
+        await loadReports();
+      }
+    } catch (err) {
       console.error("Error generating report:", err);
-      alert("Failed to generate report.");
+      alert("Failed to generate report. See console for details.");
     } finally {
       setAnalyzing(false);
     }
   };
+
+
+  //   setAnalyzing(true);
+  //   try {
+  //     await saveProfile();
+
+  //     const response = await fetch("/api/generateReport", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({
+  //         user_id: user!.id,
+  //         ...formData,
+  //       }),
+  //     });
+
+  //     const result = await response.json();
+
+  //     if (!response.ok) throw new Error(result.error || "Failed to generate report");
+
+  //     // Optionally reload reports
+  //     await loadReports();
+
+  //     alert(`Report created! Total Score: ${result.total_score}`);
+  //   } catch (err: any) {
+  //     console.error("Error generating report:", err);
+  //     alert("Failed to generate report.");
+  //   } finally {
+  //     setAnalyzing(false);
+  //   }
+  // };
 
 
 

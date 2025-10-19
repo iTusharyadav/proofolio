@@ -126,6 +126,7 @@ Open an issue and help make Proofolio better
 ## License
 
 This repository is licensed under the [MIT License](LICENSE).
+
 ---
 
 ##  Contact 

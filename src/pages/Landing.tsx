@@ -118,7 +118,7 @@ const Landing: React.FC = () => {
           ))}
         </section>
 
-        {/* Replaced stats section */}
+        
         <section className="mt-16 bg-blue-600 dark:bg-blue-700 rounded-xl p-8 text-white grid md:grid-cols-3 gap-6 text-center">
           <button
             onClick={() => setShowDocPopup(true)}
@@ -127,7 +127,7 @@ const Landing: React.FC = () => {
             📘 Documentation
           </button>
           <a
-            href="https://github.com/example"
+            href="https://github.com/iTusharyadav/proofolio.git"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:opacity-90 transition text-lg font-semibold"
@@ -135,7 +135,7 @@ const Landing: React.FC = () => {
             💻 GitHub
           </a>
           <a
-            href="https://linkedin.com/in/example"
+            href="https://www.linkedin.com/in/tusharspyadav?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:opacity-90 transition text-lg font-semibold"

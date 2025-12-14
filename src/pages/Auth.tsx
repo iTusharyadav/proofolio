@@ -1,6 +1,171 @@
+// import React, { useState } from 'react';
+// import { useNavigate } from 'react-router-dom';
+// import { BarChart3, Mail, Lock, User } from 'lucide-react';
+// import { useAuth } from '../contexts/AuthContext';
+
+// const Auth: React.FC = () => {
+//   const [isSignUp, setIsSignUp] = useState(false);
+//   const [email, setEmail] = useState('');
+//   const [password, setPassword] = useState('');
+//   const [loading, setLoading] = useState(false);
+//   const [error, setError] = useState('');
+//   const [showModal, setShowModal] = useState(false);
+
+//   const { signUp, signIn } = useAuth();
+//   const navigate = useNavigate();
+
+//   const handleSubmit = async (e: React.FormEvent) => {
+//     e.preventDefault();
+//     setLoading(true);
+//     setError('');
+//     setShowModal(false);
+
+//     try {
+//       if (isSignUp) {
+//         // Call signUp without destructuring
+//         const result = await signUp(email, password);
+//         // If your signUp returns an error object, handle it
+//         if (result?.error) throw result.error;
+
+//         // Show modal popup
+//         setShowModal(true);
+//       } else {
+//         await signIn(email, password);
+//         navigate('/dashboard');
+//       }
+//     } catch (error: any) {
+//       setError(error.message || 'Something went wrong');
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   return (
+//     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center px-4">
+//       <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
+//         <div className="text-center mb-8">
+//           <div className="flex justify-center mb-4">
+//             <BarChart3 className="h-12 w-12 text-blue-600" />
+//           </div>
+//           <h2 className="text-2xl font-bold text-gray-900">
+//             {isSignUp ? 'Create Account' : 'Welcome Back'}
+//           </h2>
+//           <p className="text-gray-600 mt-2">
+//             {isSignUp
+//               ? 'Start analyzing your developer profile'
+//               : 'Sign in to view your developer score'}
+//           </p>
+//         </div>
+
+//         {error && (
+//           <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md text-red-600 text-sm">
+//             {error}
+//           </div>
+//         )}
+
+//         <form onSubmit={handleSubmit} className="space-y-6">
+//           <div>
+//             <label
+//               htmlFor="email"
+//               className="block text-sm font-medium text-gray-700 mb-1"
+//             >
+//               Email Address
+//             </label>
+//             <div className="relative">
+//               <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+//               <input
+//                 id="email"
+//                 type="email"
+//                 required
+//                 value={email}
+//                 onChange={(e) => setEmail(e.target.value)}
+//                 className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+//                 placeholder="Enter your email"
+//               />
+//             </div>
+//           </div>
+
+//           <div>
+//             <label
+//               htmlFor="password"
+//               className="block text-sm font-medium text-gray-700 mb-1"
+//             >
+//               Password
+//             </label>
+//             <div className="relative">
+//               <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+//               <input
+//                 id="password"
+//                 type="password"
+//                 required
+//                 value={password}
+//                 onChange={(e) => setPassword(e.target.value)}
+//                 className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+//                 placeholder="Enter your password"
+//                 minLength={6}
+//               />
+//             </div>
+//           </div>
+
+//           <button
+//             type="submit"
+//             disabled={loading}
+//             className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
+//           >
+//             {loading ? (
+//               <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+//             ) : (
+//               <>
+//                 <User className="mr-2 h-5 w-5" />
+//                 {isSignUp ? 'Create Account' : 'Sign In'}
+//               </>
+//             )}
+//           </button>
+//         </form>
+
+//         <div className="mt-6 text-center">
+//           <button
+//             onClick={() => {
+//               setIsSignUp(!isSignUp);
+//               setError('');
+//               setShowModal(false);
+//             }}
+//             className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+//           >
+//             {isSignUp
+//               ? 'Already have an account? Sign in'
+//               : "Don't have an account? Sign up"}
+//           </button>
+//         </div>
+//       </div>
+
+//       {/* Modal popup for signup confirmation */}
+//       {showModal && (
+//         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+//           <div className="bg-white p-6 rounded shadow-lg max-w-sm text-center">
+//             <p className="text-gray-800">
+//               A confirmation email has been sent. Please verify your email before signing in.
+//             </p>
+//             <button
+//               onClick={() => setShowModal(false)}
+//               className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+//             >
+//               Close
+//             </button>
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default Auth;
+
+
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BarChart3, Mail, Lock, User } from 'lucide-react';
+import { BarChart3, Mail, Lock, User, CheckCircle } from 'lucide-react'; // Added CheckCircle for modal
 import { useAuth } from '../contexts/AuthContext';
 
 const Auth: React.FC = () => {
@@ -34,86 +199,108 @@ const Auth: React.FC = () => {
         navigate('/dashboard');
       }
     } catch (error: any) {
-      setError(error.message || 'Something went wrong');
+      // Improved error message extraction
+      const message = error.message || (error.toString().includes('auth') ? 'Invalid email or password.' : 'An unexpected error occurred.');
+      setError(message);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center px-4">
-      <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
+    // 1. Sleek Background (Dark Mode Aesthetic)
+    <div className="min-h-screen bg-gray-900 flex items-center justify-center px-4 py-8 md:py-16">
+
+      {/* 2. Modern Card Container */}
+      <div className="max-w-md w-full bg-gray-800 rounded-xl shadow-2xl border border-gray-700 p-6 sm:p-10 transition-all duration-500">
+
         <div className="text-center mb-8">
+          {/* Logo with Tech Gradient */}
           <div className="flex justify-center mb-4">
-            <BarChart3 className="h-12 w-12 text-blue-600" />
+            <div className="p-3 rounded-xl bg-gradient-to-r from-teal-400 to-cyan-300 shadow-xl">
+              <BarChart3 className="h-8 w-8 text-gray-900" />
+            </div>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900">
-            {isSignUp ? 'Create Account' : 'Welcome Back'}
+
+          {/* Professional Headings */}
+          <h2 className="text-3xl font-bold text-gray-100">
+            {isSignUp ? 'Join DevScore' : 'Welcome Back'}
           </h2>
-          <p className="text-gray-600 mt-2">
+          <p className="text-gray-400 mt-2">
             {isSignUp
-              ? 'Start analyzing your developer profile'
-              : 'Sign in to view your developer score'}
+              ? 'Start analyzing your developer profile instantly'
+              : 'Sign in to access your reports and dashboard'}
           </p>
         </div>
 
+        {/* Error Notification (Better Styling) */}
         {error && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md text-red-600 text-sm">
-            {error}
+          <div className="mb-6 p-4 bg-red-900/40 border border-red-700 rounded-lg text-red-300 text-sm shadow-inner">
+            <span className="font-medium">Error:</span> {error}
           </div>
         )}
 
+        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
+
+          {/* Email Input */}
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-gray-300 mb-2"
             >
               Email Address
             </label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-teal-400" />
               <input
                 id="email"
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Enter your email"
+                // 3. Modern Input Style
+                className="w-full pl-11 pr-4 py-3 bg-gray-700 text-gray-100 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-500 transition-colors text-base"
+                placeholder="you@example.com"
               />
             </div>
           </div>
 
+          {/* Password Input */}
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-gray-300 mb-2"
             >
               Password
             </label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-teal-400" />
               <input
                 id="password"
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Enter your password"
+                className="w-full pl-11 pr-4 py-3 bg-gray-700 text-gray-100 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-500 transition-colors text-base"
+                placeholder="Minimum 6 characters"
                 minLength={6}
               />
             </div>
           </div>
 
+          {/* Submit Button (Tech Gradient) */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
+            className="w-full bg-gradient-to-r from-teal-500 to-cyan-500 text-gray-900 py-3 px-4 rounded-lg font-semibold shadow-lg hover:shadow-xl hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-teal-500/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center text-lg"
           >
             {loading ? (
-              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+              // Enhanced Loading Spinner
+              <div className="flex items-center space-x-2">
+                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-r-2 border-gray-900"></div>
+                <span>Processing...</span>
+              </div>
             ) : (
               <>
                 <User className="mr-2 h-5 w-5" />
@@ -123,14 +310,15 @@ const Auth: React.FC = () => {
           </button>
         </form>
 
-        <div className="mt-6 text-center">
+        {/* Toggle Auth Mode Link */}
+        <div className="mt-8 text-center">
           <button
             onClick={() => {
               setIsSignUp(!isSignUp);
               setError('');
               setShowModal(false);
             }}
-            className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+            className="text-sm font-medium text-teal-400 hover:text-teal-300 transition-colors"
           >
             {isSignUp
               ? 'Already have an account? Sign in'
@@ -139,18 +327,23 @@ const Auth: React.FC = () => {
         </div>
       </div>
 
-      {/* Modal popup for signup confirmation */}
+      {/* Modal popup for signup confirmation (Sleek Styling) */}
       {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded shadow-lg max-w-sm text-center">
-            <p className="text-gray-800">
-              A confirmation email has been sent. Please verify your email before signing in.
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50 p-4">
+          <div className="bg-gray-800 p-8 rounded-xl shadow-2xl max-w-sm text-center border border-gray-700">
+            <CheckCircle className="h-10 w-10 mx-auto text-teal-400 mb-4" />
+            <h3 className="text-xl font-bold text-gray-100 mb-3">Verification Required</h3>
+            <p className="text-gray-300">
+              A confirmation email has been sent to **{email}**. Please verify your email before signing in.
             </p>
             <button
-              onClick={() => setShowModal(false)}
-              className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              onClick={() => {
+                setShowModal(false);
+                setIsSignUp(false); // Switch to sign-in mode after successful signup
+              }}
+              className="mt-6 w-full px-4 py-2 bg-teal-500 text-gray-900 rounded-lg font-semibold hover:bg-teal-600 transition"
             >
-              Close
+              Go to Sign In
             </button>
           </div>
         </div>

@@ -130,7 +130,7 @@ This repository is licensed under the [MIT License](LICENSE).
 ---
 
 ##  Contact 
-If you have any questions, feel free to reach out to me via GitHub or email at tushar43588@gmail.com.
+If you have any questions, feel free to reach out to me via GitHub or email at tusharspyadav@gmail.com.
 
 ---
 <p align="center">

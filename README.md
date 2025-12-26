@@ -4,7 +4,7 @@
 
 ---
 
-## 🚀 SWOC 2025 Participation
+## SWOC 2025 Participation
 
 Proofolio is an official project for **Social Winter of Code 2025**. We welcome contributors of all skill levels to help build the future of developer analytics.
 
@@ -20,7 +20,20 @@ Proofolio is an official project for **Social Winter of Code 2025**. We welcome 
 
 ##  Features
 
-- 🔐 **Authentication** with Supabase (email/password, OAuth ready)
+- **Authentication** with Supabase (email/password, OAuth ready)
+- **Multi-platform Analysis**
+  - GitHub repositories, stars, forks, and followers
+  - LinkedIn connections and endorsements
+  - Blog frequency and engagement
+  - Coding platform performance
+- **AI-Generated Insights** summarizing developer strengths
+- **Downloadable PDF Report** with radar chart visualization
+- **Automatic Dark/Light Mode** based on user system preferences
+- **Reports Dashboard** — view, compare, and manage your analysis
+- **Fully Responsive** UI built with React + Tailwind CSS
+- **Supabase Backend** for storing user profiles and reports
+
+<!-- - 🔐 **Authentication** with Supabase (email/password, OAuth ready)
 - 📊 **Multi-platform Analysis**
   - GitHub repositories, stars, forks, and followers
   - LinkedIn connections and endorsements
@@ -31,8 +44,7 @@ Proofolio is an official project for **Social Winter of Code 2025**. We welcome 
 - 🌓 **Automatic Dark/Light Mode** based on user system preferences
 - 🗂️ **Reports Dashboard** — view, compare, and manage your analysis
 - 🧭 **Fully Responsive** UI built with React + Tailwind CSS
-- ⚡ **Supabase Backend** for storing user profiles and reports
-
+- ⚡ **Supabase Backend** for storing user profiles and reports -->
 ---
 
 ##  Tech Stack
@@ -49,7 +61,7 @@ Proofolio is an official project for **Social Winter of Code 2025**. We welcome 
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -90,7 +102,7 @@ Access the app at 👉 `http://localhost:5173`.
 
 ---
 
-## 🤝 Contributing 
+## Contributing 
 We welcome **all kinds of contributions** — code or non-code. 
 
 ### How to Contribute
@@ -109,10 +121,10 @@ git commit -m "Add: meaningful message"
 git push origin feature/your-feature-name
 ```
 5. Open a Pull Request
-6. 👉 Please check existing issues before creating a new one. ---
+👉 Please check existing issues before creating a new one. ---
 
 
-## 🗺️ Roadmap
+## Roadmap
 
 * [ ] **AI Career Pathing:** Suggesting specific roles based on analyzed skill sets.
 * [ ] **Recruiter Mode:** Public shareable profile links with verified stats.
@@ -133,3 +145,4 @@ If you have any questions, feel free to reach out to me via GitHub or email at t
 <p align="center">
   Built with 💙
 </p>
+

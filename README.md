@@ -14,7 +14,7 @@ Proofolio is an official project for **Social Winter of Code 2025**. We welcome 
 ---
 
 > [!TIP]
-> **Non-Coding Contributions:** We also maintain a Contribution Hub [Know More](https://github.com/your-username/contribution-hub) for career resources, guides, and community documentation.
+> **Non-Coding Contributions:** We also maintain a Contribution Hub [Know More](https://github.com/iTusharyadav/know-more.git) for career resources, guides, and community documentation.
 
 ---
 
@@ -60,7 +60,7 @@ Proofolio is an official project for **Social Winter of Code 2025**. We welcome 
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/username/proofolio.git
+git clone https://github.com/iTusharyadav/proofolio.git
 cd proofolio
 
 ```
@@ -89,6 +89,27 @@ npm run dev
 Access the app at 👉 `http://localhost:5173`.
 
 ---
+
+## 🤝 Contributing 
+We welcome **all kinds of contributions** — code or non-code. 
+
+### How to Contribute
+1. Fork the repository
+
+2. Create a new branch
+```bash
+git checkout -b feature/your-feature-name
+```
+3. Commit your changes
+```bash
+git commit -m "Add: meaningful message"
+``` 
+4. Push to your fork
+```bash
+git push origin feature/your-feature-name
+```
+5. Open a Pull Request
+6. 👉 Please check existing issues before creating a new one. ---
 
 
 ## 🗺️ Roadmap

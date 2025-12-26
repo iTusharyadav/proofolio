@@ -1,6 +1,20 @@
-#  Proofolio - Developer Portfolio Analyzer
+# Proofolio
 
-**Proofolio** is an AI-powered web application that analyzes a developer’s public profiles - such as **GitHub**, **LinkedIn**, **Blogs**, and **Coding Platforms** — to generate a **comprehensive performance report** with insights, scores, and growth suggestions.
+**Proofolio** is an AI-powered analyzer that aggregates data from GitHub, LinkedIn, and technical blogs to generate a professional performance report. It provides developers with actionable insights, skill scoring, and growth recommendations to enhance their online presence.
+
+---
+
+## 🚀 SWOC 2025 Participation
+
+Proofolio is an official project for **Social Winter of Code 2025**. We welcome contributors of all skill levels to help build the future of developer analytics.
+
+* **Areas for Contribution:** Frontend (React), Backend (Supabase), UI/UX Design, and Documentation.
+* **Getting Started:** Look for the `good first issue` and `gssoc` labels in the Issues tab.
+
+---
+
+> [!TIP]
+> **Non-Coding Contributions:** We also maintain a Contribution Hub [Know More](https://github.com/your-username/contribution-hub) for career resources, guides, and community documentation.
 
 ---
 
@@ -35,91 +49,53 @@
 
 ---
 
-##  Setup Instructions
+## 🚀 Getting Started
 
-### 1️⃣ Clone Repository
+### Prerequisites
 
+* Node.js (v18+)
+* NPM or Yarn
+
+### Installation
+
+1. **Clone the repository**
 ```bash
-git clone https://github.com/iTusharyadav/proofolio.git
+git clone https://github.com/username/proofolio.git
 cd proofolio
+
 ```
 
-## 2️⃣ Install Dependencies
-
+2. **Install dependencies**
 ```bash
 npm install
+
 ```
 
-## 3️⃣ Configure Environment Variables
+3. **Environment Setup**
+Create a `.env` file in the root and add your Supabase credentials:
+```env
+VITE_SUPABASE_URL=your_project_url
+VITE_SUPABASE_ANON_KEY=your_anon_key
 
-Create a .env file in the root directory:
-
-```bash
-VITE_SUPABASE_URL=your_supabase_project_url
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
-## 4️⃣ Run Development Server
 
+4. **Start Development**
 ```bash
 npm run dev
+
 ```
 
-App will be available at:
-👉 http://localhost:5173
+Access the app at 👉 `http://localhost:5173`.
 
-##  Folder Structure
-
-proofolio/
-```bash
-├── src/
-│   ├── components/        # Navbar, ProtectedRoute, etc.
-│   ├── contexts/          # AuthContext for user sessions
-│   ├── pages/             # Landing, Dashboard, Report
-│   ├── utils/             # Supabase, analysis, helper functions
-│   ├── App.tsx            # App routes
-│   └── main.tsx           # Entry point
-│
-├── public/
-│
-└── README.md
-```
-
-## Future Roadmap
-- Add Profile Page (user info & editable details)
-- Compare Reports (side-by-side visualization)
-- More Platform Integrations (LeetCode, Medium, Dev.to)
-- Email / Share Report feature
-- AI-powered Recommendations
-
-##  Contributing
-We welcome all kinds of contributions — bug fixes, new features, UI improvements, documentation, and more!
-
- 
-1️⃣ Fork this repository
-
-2️⃣ Create a feature branch
-
-```bash
-git checkout -b feature/your-feature-name
-```
-
-3️⃣ Commit your changes
-
-```bash
-git commit -m "Add your message here"
-```
-
-4️⃣ Push to your fork
-
-```bash
-git push origin feature/your-feature-name
-```
 ---
 
-## Issues & Feedback
-Found a bug? Have a feature idea?
-Open an issue and help make Proofolio better
+
+## 🗺️ Roadmap
+
+* [ ] **AI Career Pathing:** Suggesting specific roles based on analyzed skill sets.
+* [ ] **Recruiter Mode:** Public shareable profile links with verified stats.
+* [ ] **Progress Tracking:** Visual graphs showing profile growth over months.
 
 ---
 

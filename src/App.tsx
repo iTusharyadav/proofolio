@@ -8,6 +8,7 @@ import Auth from './pages/Auth';
 import Dashboard from './pages/Dashboard';
 import Report from './pages/Report';
 
+
 function App() {
   return (
     <AuthProvider>

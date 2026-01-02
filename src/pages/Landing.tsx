@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   BarChart3,
@@ -641,9 +641,9 @@ const Landing: React.FC = () => {
                 </div>
 
                 <div className="flex gap-4">
-                  <a className={`${t.muted} text-sm hover:text-teal-300 transition`} href="#" target="_blank" rel="noreferrer">GitHub</a>
-                  <a className={`${t.muted} text-sm hover:text-teal-300 transition`} href="#" target="_blank" rel="noreferrer">LinkedIn</a>
-                  <a className={`${t.muted} text-sm hover:text-teal-300 transition`} href="#" onClick={(e) => { e.preventDefault(); setShowDocPopup(true); }}>Docs</a>
+                  <a className={`${t.muted} text-sm hover:text-teal-300 transition`} href="https://github.com/iTusharyadav" target="_blank" rel="noreferrer">GitHub</a>
+                  <a className={`${t.muted} text-sm hover:text-teal-300 transition`} href="https://www.linkedin.com/login" target="_blank" rel="noreferrer">LinkedIn</a>
+                  <a className={`${t.muted} text-sm hover:text-teal-300 transition`} href="https://github.com/iTusharyadav/proofolio/blob/main/README.md" target="_blank" rel="noreferrer">Docs</a>
                 </div>
               </div>
 

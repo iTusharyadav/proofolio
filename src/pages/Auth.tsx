@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BarChart3, Mail, Lock, User, CheckCircle } from 'lucide-react'; // Added CheckCircle for modal
+import { BarChart3, Mail, Lock, User, CheckCircle } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 const Auth: React.FC = () => {
   const [isSignUp, setIsSignUp] = useState(false);
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -22,138 +23,120 @@ const Auth: React.FC = () => {
 
     try {
       if (isSignUp) {
-        // Call signUp without destructuring
-        const result = await signUp(email, password);
-        // If your signUp returns an error object, handle it
-        if (result?.error) throw result.error;
-
-        // Show modal popup
+        await signUp(email, password, username);
         setShowModal(true);
       } else {
         await signIn(email, password);
         navigate('/dashboard');
       }
-    } catch (error: any) {
-      // Improved error message extraction
-      const message = error.message || (error.toString().includes('auth') ? 'Invalid email or password.' : 'An unexpected error occurred.');
-      setError(message);
+    } catch (err: any) {
+      setError(err.message || 'An unexpected error occurred.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    // 1. Sleek Background (Dark Mode Aesthetic)
-    <div className="min-h-screen bg-gray-900 flex items-center justify-center px-4 py-8 md:py-16">
-
-      {/* 2. Modern Card Container */}
-      <div className="max-w-md w-full bg-gray-800 rounded-xl shadow-2xl border border-gray-700 p-6 sm:p-10 transition-all duration-500">
+    <div className="min-h-screen bg-gray-900 flex items-center justify-center px-4 py-8">
+      <div className="max-w-md w-full bg-gray-800 rounded-xl shadow-2xl border border-gray-700 p-6 sm:p-10">
 
         <div className="text-center mb-8">
-          {/* Logo with Tech Gradient */}
           <div className="flex justify-center mb-4">
-            <div className="p-3 rounded-xl bg-gradient-to-r from-teal-400 to-cyan-300 shadow-xl">
+            <div className="p-3 rounded-xl bg-gradient-to-r from-teal-400 to-cyan-300">
               <BarChart3 className="h-8 w-8 text-gray-900" />
             </div>
           </div>
 
-          {/* Professional Headings */}
           <h2 className="text-3xl font-bold text-gray-100">
             {isSignUp ? 'Join DevScore' : 'Welcome Back'}
           </h2>
           <p className="text-gray-400 mt-2">
             {isSignUp
-              ? 'Start analyzing your developer profile instantly'
-              : 'Sign in to access your reports and dashboard'}
+              ? 'Create your account to get started'
+              : 'Sign in to access your dashboard'}
           </p>
         </div>
 
-        {/* Error Notification (Better Styling) */}
         {error && (
-          <div className="mb-6 p-4 bg-red-900/40 border border-red-700 rounded-lg text-red-300 text-sm shadow-inner">
-            <span className="font-medium">Error:</span> {error}
+          <div className="mb-6 p-4 bg-red-900/40 border border-red-700 rounded-lg text-red-300 text-sm">
+            <strong>Error:</strong> {error}
           </div>
         )}
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
 
-          {/* Email Input */}
+          {isSignUp && (
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Username
+              </label>
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-teal-400" />
+                <input
+                  type="text"
+                  required
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="w-full pl-11 pr-4 py-3 bg-gray-700 text-gray-100 border border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500"
+                  placeholder="your_username"
+                  minLength={3}
+                />
+              </div>
+            </div>
+          )}
+
           <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-300 mb-2"
-            >
+            <label className="block text-sm font-medium text-gray-300 mb-2">
               Email Address
             </label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-teal-400" />
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-teal-400" />
               <input
-                id="email"
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                // 3. Modern Input Style
-                className="w-full pl-11 pr-4 py-3 bg-gray-700 text-gray-100 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-500 transition-colors text-base"
+                className="w-full pl-11 pr-4 py-3 bg-gray-700 text-gray-100 border border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500"
                 placeholder="you@example.com"
               />
             </div>
           </div>
 
-          {/* Password Input */}
           <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-300 mb-2"
-            >
+            <label className="block text-sm font-medium text-gray-300 mb-2">
               Password
             </label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-teal-400" />
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-teal-400" />
               <input
-                id="password"
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-11 pr-4 py-3 bg-gray-700 text-gray-100 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-500 transition-colors text-base"
-                placeholder="Minimum 6 characters"
                 minLength={6}
+                className="w-full pl-11 pr-4 py-3 bg-gray-700 text-gray-100 border border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500"
+                placeholder="Minimum 6 characters"
               />
             </div>
           </div>
 
-          {/* Submit Button (Tech Gradient) */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-gradient-to-r from-teal-500 to-cyan-500 text-gray-900 py-3 px-4 rounded-lg font-semibold shadow-lg hover:shadow-xl hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-teal-500/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center text-lg"
+            className="w-full bg-gradient-to-r from-teal-500 to-cyan-500 text-gray-900 py-3 rounded-lg font-semibold disabled:opacity-50"
           >
-            {loading ? (
-              // Enhanced Loading Spinner
-              <div className="flex items-center space-x-2">
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-r-2 border-gray-900"></div>
-                <span>Processing...</span>
-              </div>
-            ) : (
-              <>
-                <User className="mr-2 h-5 w-5" />
-                {isSignUp ? 'Create Account' : 'Sign In'}
-              </>
-            )}
+            {loading ? 'Processing...' : isSignUp ? 'Create Account' : 'Sign In'}
           </button>
         </form>
 
-        {/* Toggle Auth Mode Link */}
         <div className="mt-8 text-center">
           <button
             onClick={() => {
               setIsSignUp(!isSignUp);
+              setUsername('');
               setError('');
-              setShowModal(false);
             }}
-            className="text-sm font-medium text-teal-400 hover:text-teal-300 transition-colors"
+            className="text-sm text-teal-400 hover:text-teal-300"
           >
             {isSignUp
               ? 'Already have an account? Sign in'
@@ -162,21 +145,22 @@ const Auth: React.FC = () => {
         </div>
       </div>
 
-      {/* Modal popup for signup confirmation (Sleek Styling) */}
       {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50 p-4">
-          <div className="bg-gray-800 p-8 rounded-xl shadow-2xl max-w-sm text-center border border-gray-700">
+        <div className="fixed inset-0 flex items-center justify-center bg-black/70">
+          <div className="bg-gray-800 p-8 rounded-xl text-center max-w-sm border border-gray-700">
             <CheckCircle className="h-10 w-10 mx-auto text-teal-400 mb-4" />
-            <h3 className="text-xl font-bold text-gray-100 mb-3">Verification Required</h3>
+            <h3 className="text-xl font-bold text-gray-100 mb-3">
+              Verify Your Email
+            </h3>
             <p className="text-gray-300">
-              A confirmation email has been sent to **{email}**. Please verify your email before signing in.
+              A confirmation email was sent to <strong>{email}</strong>.
             </p>
             <button
               onClick={() => {
                 setShowModal(false);
-                setIsSignUp(false); // Switch to sign-in mode after successful signup
+                setIsSignUp(false);
               }}
-              className="mt-6 w-full px-4 py-2 bg-teal-500 text-gray-900 rounded-lg font-semibold hover:bg-teal-600 transition"
+              className="mt-6 w-full py-2 bg-teal-500 text-gray-900 rounded-lg font-semibold"
             >
               Go to Sign In
             </button>

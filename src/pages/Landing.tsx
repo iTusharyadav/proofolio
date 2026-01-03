@@ -404,33 +404,55 @@ const Landing: React.FC = () => {
                 </div>
 
                 {/* Floating small stat cards */}
-                <div className="absolute -left-6 -top-8 w-44 p-3 rounded-xl glass shadow-lg hidden lg:block">
+                <div
+                  className={`absolute -left-6 -top-14 w-44 p-3 rounded-xl hidden lg:block
+                    ${isDark ? "glass bg-black/30" : "bg-white"}
+                    shadow-lg
+                  `}
+                >
                   <div className="flex items-center gap-3">
                     <div className="rounded-md p-2 bg-gradient-to-br from-teal-400 to-cyan-300">
                       <Github className="w-4 h-4 text-black" />
                     </div>
                     <div>
-                      <div className="text-xs text-gray-300">Commits</div>
-                      <div className="text-sm font-semibold">1,234</div>
+                      <div className={`text-xs ${isDark ? "text-white" : "text-gray-900"}`}>
+                        Commits
+                      </div>
+                      <div className={`text-sm font-semibold ${isDark ? "text-white" : "text-gray-900"}`}>
+                        1,234
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="absolute -right-4 bottom-6 w-44 p-3 rounded-xl glass shadow-lg hidden lg:block">
+
+                <div
+                  className={`absolute -right-4 bottom-[-45px] w-44 p-3 rounded-xl hidden lg:block
+                    ${isDark ? "bg-[#0b1220] shadow-xl" : "bg-white shadow-lg"}
+                  `}
+                >
                   <div className="flex items-center gap-3">
                     <div>
-                      <div className="text-xs text-gray-300">Coding Score</div>
-                      <div className="text-sm font-semibold">84 / 100</div>
+                      <div className={`text-xs ${isDark ? "text-white" : "text-gray-900"}`}>
+                        Coding Score
+                      </div>
+                      <div className={`text-sm font-semibold ${isDark ? "text-white" : "text-gray-900"}`}>
+                        84 / 100
+                      </div>
                     </div>
+
                     <div className="ml-auto">
-                      <div className="w-10 h-10 flex items-center justify-center rounded-full glass">
+                      <div
+                        className={`w-10 h-10 flex items-center justify-center rounded-full
+                          ${isDark ? "bg-black/10" : "bg-gray-100"}
+                        `}
+                      >
                         <Code className="w-4 h-4 text-teal-300" />
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
         </section>

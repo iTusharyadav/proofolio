@@ -4,6 +4,11 @@
 
 ---
 
+> [!TIP]
+> **Non-Coding Contributions:** We also maintain a Contribution Hub [Know More](https://github.com/iTusharyadav/know-more.git) for career resources, guides, and community documentation.
+
+---
+
 ## SWOC 2025 Participation
 
 Proofolio is an official project for **Social Winter of Code 2025**. We welcome contributors of all skill levels to help build the future of developer analytics.
@@ -13,10 +18,7 @@ Proofolio is an official project for **Social Winter of Code 2025**. We welcome 
 
 ---
 
-> [!TIP]
-> **Non-Coding Contributions:** We also maintain a Contribution Hub [Know More](https://github.com/iTusharyadav/know-more.git) for career resources, guides, and community documentation.
 
----
 
 ##  Features
 

@@ -424,8 +424,6 @@ const Landing: React.FC = () => {
                     </div>
                   </div>
                 </div>
-
-
                 <div
                   className={`absolute -right-4 bottom-[-45px] w-44 p-3 rounded-xl hidden lg:block
                     ${isDark ? "bg-[#0b1220] shadow-xl" : "bg-white shadow-lg"}

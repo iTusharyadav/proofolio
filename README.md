@@ -123,7 +123,9 @@ git commit -m "Add: meaningful message"
 git push origin feature/your-feature-name
 ```
 5. Open a Pull Request
-👉 Please check existing issues before creating a new one. ---
+👉 Please check existing issues before creating a new one.
+
+---
 
 
 ## Roadmap

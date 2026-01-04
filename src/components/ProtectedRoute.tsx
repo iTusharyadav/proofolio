@@ -21,7 +21,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     return <Navigate to="/auth" replace />;
   }
 
-  return <>{children}</>;
+  return (
+    <>
+    {children}
+    </>
+  )
 };
 
 export default ProtectedRoute;

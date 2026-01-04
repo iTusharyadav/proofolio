@@ -1,11 +1,18 @@
-# Proofolio
+# Proofolio 
 
-**Proofolio** is an AI-powered analyzer that aggregates data from GitHub, LinkedIn, and technical blogs to generate a professional performance report. It provides developers with actionable insights, skill scoring, and growth recommendations to enhance their online presence.
+**Proofolio** is an AI-powered developer portfolio analyzer that transforms data from **GitHub, LinkedIn, and technical blogs** into a **professional, recruiter-friendly performance report**.
+
+It helps developers:
+- Understand their real-world impact
+- Showcase **verified proof of work**
+- Get **actionable insights** for career growth
 
 ---
 
+
 > [!TIP]
-> **Non-Coding Contributions:** We also maintain a Contribution Hub [Know More](https://github.com/iTusharyadav/know-more.git) for career resources, guides, and community documentation.
+> **Non-Code Contributions Are Welcome!**  
+> We also maintain a Contribution Hub for guides, career resources, and community documentation and [Know More](https://github.com/iTusharyadav/know-more.git)
 
 ---
 
@@ -15,6 +22,81 @@ Proofolio is an official project for **Social Winter of Code 2025**. We welcome 
 
 * **Areas for Contribution:** Frontend (React), Backend (Supabase), UI/UX Design, and Documentation.
 * **Getting Started:** Look for the `good first issue` and `gssoc` labels in the Issues tab.
+
+---
+
+## 🌟 Social Winter of Code 2025 (SWOC)
+
+Proofolio is an **official Formal Project under Social Winter of Code 2025** 🎉  
+We welcome contributors from **all skill levels and backgrounds**.
+
+### Contribution Domains
+- Frontend (React + TypeScript)
+- Backend (Supabase)
+- UI/UX Design
+- Documentation & Community Support
+  
+
+## 📜 SWOC Contribution Rules (Mandatory)
+
+This project strictly follows the **SWOC Project Admin (PA) Playbook**.  
+All contributors **must** adhere to the rules below.
+
+### 🧩 Issue Assignment Rules
+- A contributor can be assigned **only ONE issue at a time**
+- Do **NOT** start working without being officially assigned
+- If no meaningful progress is shown for **10 days**, the issue will be:
+  - Unassigned
+  - Reopened for others
+
+Meaningful activity includes:
+- Commits
+- Progress updates
+- Relevant discussion on the issue thread
+
+---
+
+### 🏷️ Issue Difficulty & Scoring (SWOC)
+
+Each issue has **exactly one** SWOC difficulty tag:
+
+| Difficulty | Points |
+|-----------|--------|
+| **Easy** | 30 |
+| **Medium** | 40 |
+| ** Hard** | 50 |
+
+📌 Important Notes:
+- Difficulty is decided **only by the Project Admin**
+- Points are awarded **only after PR is merged**
+- Issues without proper SWOC tags are **not eligible for scoring**
+- Multiple SWOC difficulty tags on one issue are **not allowed**
+
+---
+
+### 🔀 Pull Request (PR) Rules
+- ❌ **Do NOT open a PR without approval**
+- You must:
+  1. Get assigned to the issue
+  2. Receive explicit permission to open a PR
+- Unauthorized PRs may be **closed without review**
+
+All PRs:
+- Are reviewed by the Project Admin / Mentors
+- Must be original, meaningful, and follow project standards
+- Must resolve all review comments before merge
+
+---
+
+### ⚖️ Code of Conduct & Fair Play
+- Be respectful and professional
+- No spam, plagiarism, or force-claiming issues
+- No favoritism or private assignment requests
+
+Violations may lead to:
+- Issue unassignment
+- PR rejection
+- Reporting to the SWOC core team
 
 ---
 
@@ -123,6 +205,7 @@ git commit -m "Add: meaningful message"
 git push origin feature/your-feature-name
 ```
 5. Open a Pull Request
+
 👉 Please check existing issues before creating a new one.
 
 ---
@@ -138,12 +221,22 @@ git push origin feature/your-feature-name
 
 ## License
 
-This repository is licensed under the [MIT License](LICENSE).
+This project is licensed under the MIT License.
+See the [LICENSE](LICENSE) file for details.
 
 ---
 
-##  Contact 
-If you have any questions, feel free to reach out to me via GitHub or email at tusharspyadav@gmail.com.
+## Contact & Community
+
+Have questions, ideas, or need help getting started?  
+Feel free to reach out through any of the channels below:
+
+<!-- 💼 **LinkedIn** : https://www.linkedin.com/in/your-linkedin-username-->
+
+- 🐙 **GitHub** : Open an issue or start a discussion in this repository
+- 📧 **Email** : tusharspyadav@gmail.com
+- 💬 **Discord** : Join the SWOC Discord or reach out via DM  
+- 🌐 **Community Discussions** : Use GitHub Discussions (if enabled) for long-form questions and ideas
 
 ---
 <p align="center">

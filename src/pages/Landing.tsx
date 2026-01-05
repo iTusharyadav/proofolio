@@ -14,7 +14,7 @@ import {
   Zap,
   ShieldCheck,
   Users,
-  Menu, // New Icon for Mobile Menu
+  Menu,
   CheckCircle,
   Lightbulb,
 } from "lucide-react";
@@ -37,7 +37,6 @@ const FAQItem: React.FC<{ question: string; answer: string; isDark: boolean; }> 
   );
 };
 
-
 const Landing: React.FC = () => {
   const { user } = useAuth();
   // theme state (persisted)
@@ -46,7 +45,8 @@ const Landing: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   // doc popup
   const [showDocPopup, setShowDocPopup] = useState(false);
-
+  // Track touch active state
+  const [touchActiveId, setTouchActiveId] = useState<string | null>(null);
 
   useEffect(() => {
     try {
@@ -69,6 +69,15 @@ const Landing: React.FC = () => {
     } else {
       document.body.classList.remove("bg-gray-900", "text-gray-100");
       document.body.classList.add("bg-white", "text-gray-900");
+    }
+
+    // ✅ ADD THIS PART - For CSS targeting light/dark mode
+    if (theme === 'light') {
+      document.body.classList.add('light');
+      document.body.classList.remove('dark');
+    } else {
+      document.body.classList.add('dark');
+      document.body.classList.remove('light');
     }
   }, []);
 
@@ -103,49 +112,118 @@ const Landing: React.FC = () => {
     return () => document.querySelectorAll(".fade-in").forEach((el) => obs.unobserve(el));
   }, []);
 
+  // Handle touch events for mobile menu items
+  const handleTouchStart = (id: string) => {
+    setTouchActiveId(id);
+  };
+
+  const handleTouchEnd = () => {
+    setTimeout(() => setTouchActiveId(null), 150);
+  };
 
   // small inline CSS to keep everything inside the file (glass, float, snap fine-tuning)
   const inlineStyles = `
-        /* float */
-        @keyframes floatY { 0% { transform: translateY(0); } 50% { transform: translateY(-8px);} 100% { transform: translateY(0);} }
-        .float-slow { animation: floatY 6s ease-in-out infinite; }
+    /* float */
+    @keyframes floatY { 0% { transform: translateY(0); } 50% { transform: translateY(-8px);} 100% { transform: translateY(0);} }
+    .float-slow { animation: floatY 6s ease-in-out infinite; }
 
-        /* fade-in helper */
-        .fade-in { opacity: 0; transform: translateY(8px); transition: opacity .45s ease, transform .45s cubic-bezier(.2,.9,.2,1); will-change: opacity, transform; }
-        .fade-in.in-view { opacity: 1; transform: translateY(0); }
+    /* fade-in helper */
+    .fade-in { opacity: 0; transform: translateY(8px); transition: opacity .45s ease, transform .45s cubic-bezier(.2,.9,.2,1); will-change: opacity, transform; }
+    .fade-in.in-view { opacity: 1; transform: translateY(0); }
 
-        /* small nav outline removal for the centered nav look */
-        .nav-outline { box-shadow: 0 8px 32px rgba(2,6,23,0.45); border: 1px solid rgba(255,255,255,0.04); }
+    /* small nav outline removal for the centered nav look */
+    .nav-outline { box-shadow: 0 8px 32px rgba(2,6,23,0.45); border: 1px solid rgba(255,255,255,0.04); }
 
-        /* make anchor jumps smooth and avoid tiny flicker */
-        html { scroll-behavior: smooth; }
+    /* make anchor jumps smooth and avoid tiny flicker */
+    html { scroll-behavior: smooth; }
 
-        /* Subtle Shine Effect for professional polish */
-        .shine-effect { 
-            position: relative; 
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-        .shine-effect::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 50%;
-            height: 100%;
-            background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0) 100%);
-            transform: skewX(-30deg);
-            transition: all 0.5s ease;
-        }
-        .shine-effect:hover::before {
-            left: 150%;
-        }
+    /* Subtle Shine Effect for professional polish */
+    .shine-effect { 
+        position: relative; 
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    .shine-effect::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0) 100%);
+        transform: skewX(-30deg);
+        transition: all 0.5s ease;
+    }
+    .shine-effect:hover::before {
+        left: 150%;
+    }
 
-        /* Card glow on hover (dark mode only) */
-        .card-glow-hover:hover {
-            box-shadow: 0 0 40px rgba(52, 211, 163, 0.15), 0 0 10px rgba(52, 211, 163, 0.1); /* Teal glow */
-        }
-    `;
+    /* Mobile Menu Hover Effects - Desktop only */
+    @media (hover: hover) and (pointer: fine) {
+      .menu-item:hover {
+        transform: scale(1.02);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+      
+      .menu-item:hover .menu-item-icon {
+        transform: scale(1.1) rotate(3deg);
+        background: linear-gradient(135deg, rgba(20, 184, 166, 0.2), rgba(6, 182, 212, 0.2));
+      }
+      
+      .menu-item:hover .menu-item-icon-inner {
+        color: rgb(94 234 212);
+      }
+      
+      .menu-item:hover .menu-item-text {
+        transform: translateX(8px);
+      }
+      
+      .menu-item:hover .menu-item-arrow {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    .menu-item-arrow {
+      opacity: 0;
+      transform: translateX(-8px);
+    }
+    
+    /* Mobile touch feedback */
+    .menu-item.touch-active {
+      transform: scale(0.98);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .menu-item.touch-active .menu-item-icon {
+      transform: scale(0.95);
+      background: linear-gradient(135deg, rgba(20, 184, 166, 0.3), rgba(6, 182, 212, 0.3));
+    }
+    
+    .menu-item.touch-active .menu-item-icon-inner {
+      color: rgb(94 234 212) !important;
+    }
+    
+    .menu-item.touch-active .menu-item-text {
+      transform: translateX(4px);
+    }
+    
+    .menu-item.touch-active .menu-item-arrow {
+      opacity: 0.8;
+      transform: translateX(2px);
+    }
+    
+    /* For light mode adjustments */
+    .light .menu-item:hover .menu-item-icon-inner,
+    .light .menu-item.touch-active .menu-item-icon-inner {
+      color: rgb(13 148 136);
+    }
+    
+    /* Card glow on hover (dark mode only) */
+    .card-glow-hover:hover {
+        box-shadow: 0 0 40px rgba(52, 211, 163, 0.15), 0 0 10px rgba(52, 211, 163, 0.1);
+    }
+  `;
 
   const isDark = theme === "dark";
 
@@ -162,14 +240,13 @@ const Landing: React.FC = () => {
     e.preventDefault();
     const targetElement = document.getElementById(targetId);
     if (targetElement) {
-      // Adjust scroll position to account for fixed header
       const offsetTop = targetElement.offsetTop - HEADER_HEIGHT;
       window.scrollTo({
         top: offsetTop > 0 ? offsetTop : 0,
         behavior: 'smooth'
       });
     }
-    setIsMenuOpen(false); // Close menu after selection
+    setIsMenuOpen(false);
   };
 
   const NavLinks = () => (
@@ -182,8 +259,7 @@ const Landing: React.FC = () => {
   );
 
   return (
-    <div className={`${isDark ? "bg-gradient-to-br from-gray-900 via-gray-800 to-black text-gray-100" : "bg-gradient-to-br from-white via-gray-50 to-gray-100 text-gray-900"} min-h-screen
-`}>
+    <div className={`${isDark ? "bg-gradient-to-br from-gray-900 via-gray-800 to-black text-gray-100" : "bg-gradient-to-br from-white via-gray-50 to-gray-100 text-gray-900"} min-h-screen`}>
       <style>{inlineStyles}</style>
 
       {/* Centered rounded navbar (single nav) */}
@@ -239,26 +315,247 @@ const Landing: React.FC = () => {
         </nav>
       </header>
 
-      {/* Mobile Menu Dropdown (Animated) */}
+      {/* Mobile Sidebar Menu - Touch Optimized */}
       <div
-        className={`fixed top-0 left-0 w-full pt-[100px] pb-6 z-40 lg:hidden transition-all duration-300 ${isMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0 pointer-events-none'
-          } ${isDark ? "bg-gray-900/95 backdrop-blur-md" : "bg-white/95 backdrop-blur-md"}`}
+        className={`fixed top-0 right-0 h-full w-72 z-50 lg:hidden transition-all duration-300 ease-in-out ${isMenuOpen
+            ? 'translate-x-0 opacity-100 backdrop-blur-sm'
+            : 'translate-x-full opacity-0 pointer-events-none backdrop-blur-0'
+          } ${isDark
+            ? "bg-gradient-to-b from-gray-900 via-gray-900/95 to-gray-900/90 border-l border-white/10"
+            : "bg-gradient-to-b from-white via-white/95 to-white/90 border-l border-gray-200"
+          } shadow-2xl`}
       >
-        <ul className="flex flex-col items-center gap-4 text-xl font-medium w-full px-6">
-          <NavLinks />
-          <li className="mt-4 w-full px-4">
+        {/* Header with close button */}
+        <div className="flex justify-end items-center p-6 border-b border-white/10">
+          <button
+            onClick={() => setIsMenuOpen(false)}
+            aria-label="Close menu"
+            className={`p-3 rounded-full transition-all duration-300 hover:scale-110 active:scale-95 ${isDark
+                ? "bg-gray-800/80 hover:bg-gray-700/80 hover:shadow-lg hover:shadow-gray-800/50 text-gray-300"
+                : "bg-gray-100 hover:bg-gray-200 hover:shadow-lg hover:shadow-gray-300/50 text-gray-700"
+              }`}
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        {/* Menu Items Container */}
+        <div className="flex flex-col p-8 space-y-4">
+          {/* Features Menu Item */}
+          <div className="relative">
+            <a
+              href="#features"
+              onClick={(e) => handleNavigation(e, 'features')}
+              onTouchStart={() => handleTouchStart('features')}
+              onTouchEnd={handleTouchEnd}
+              className={`menu-item flex items-center py-4 px-5 rounded-xl transition-all duration-300 relative overflow-hidden ${touchActiveId === 'features' ? 'touch-active' : ''
+                } ${isDark
+                  ? "bg-gray-800/30 text-gray-200 hover:bg-gray-800/50 hover:text-teal-300"
+                  : "bg-gray-50 text-gray-700 hover:bg-gray-100 hover:text-teal-600"
+                }`}
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-teal-400/0 via-teal-400/10 to-teal-400/0 opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
+
+              <div className={`mr-4 p-2.5 rounded-lg transition-all duration-300 menu-item-icon ${isDark
+                  ? "bg-teal-400/10"
+                  : "bg-teal-100"
+                }`}>
+                <BarChart3 className={`h-5 w-5 transition-all duration-300 menu-item-icon-inner ${isDark
+                    ? "text-teal-300"
+                    : "text-teal-600"
+                  }`} />
+              </div>
+
+              <span className="text-lg font-medium transition-all duration-300 menu-item-text flex-1">
+                Features
+              </span>
+
+              <ArrowRight className={`h-4 w-4 transition-all duration-300 menu-item-arrow ${isDark ? "text-teal-300" : "text-teal-500"
+                }`} />
+            </a>
+          </div>
+
+          {/* How it works Menu Item */}
+          <div className="relative">
+            <a
+              href="#how"
+              onClick={(e) => handleNavigation(e, 'how')}
+              onTouchStart={() => handleTouchStart('how')}
+              onTouchEnd={handleTouchEnd}
+              className={`menu-item flex items-center py-4 px-5 rounded-xl transition-all duration-300 relative overflow-hidden ${touchActiveId === 'how' ? 'touch-active' : ''
+                } ${isDark
+                  ? "bg-gray-800/30 text-gray-200 hover:bg-gray-800/50 hover:text-cyan-300"
+                  : "bg-gray-50 text-gray-700 hover:bg-gray-100 hover:text-cyan-600"
+                }`}
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/0 via-cyan-400/10 to-cyan-400/0 opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
+
+              <div className={`mr-4 p-2.5 rounded-lg transition-all duration-300 menu-item-icon ${isDark
+                  ? "bg-cyan-400/10"
+                  : "bg-cyan-100"
+                }`}>
+                <Cpu className={`h-5 w-5 transition-all duration-300 menu-item-icon-inner ${isDark
+                    ? "text-cyan-300"
+                    : "text-cyan-600"
+                  }`} />
+              </div>
+
+              <span className="text-lg font-medium transition-all duration-300 menu-item-text flex-1">
+                How it works
+              </span>
+
+              <ArrowRight className={`h-4 w-4 transition-all duration-300 menu-item-arrow ${isDark ? "text-cyan-300" : "text-cyan-500"
+                }`} />
+            </a>
+          </div>
+
+          {/* Why Us Menu Item */}
+          <div className="relative">
+            <a
+              href="#why"
+              onClick={(e) => handleNavigation(e, 'why')}
+              onTouchStart={() => handleTouchStart('why')}
+              onTouchEnd={handleTouchEnd}
+              className={`menu-item flex items-center py-4 px-5 rounded-xl transition-all duration-300 relative overflow-hidden ${touchActiveId === 'why' ? 'touch-active' : ''
+                } ${isDark
+                  ? "bg-gray-800/30 text-gray-200 hover:bg-gray-800/50 hover:text-emerald-300"
+                  : "bg-gray-50 text-gray-700 hover:bg-gray-100 hover:text-emerald-600"
+                }`}
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/0 via-emerald-400/10 to-emerald-400/0 opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
+
+              <div className={`mr-4 p-2.5 rounded-lg transition-all duration-300 menu-item-icon ${isDark
+                  ? "bg-emerald-400/10"
+                  : "bg-emerald-100"
+                }`}>
+                <ShieldCheck className={`h-5 w-5 transition-all duration-300 menu-item-icon-inner ${isDark
+                    ? "text-emerald-300"
+                    : "text-emerald-600"
+                  }`} />
+              </div>
+
+              <span className="text-lg font-medium transition-all duration-300 menu-item-text flex-1">
+                Why Us
+              </span>
+
+              <ArrowRight className={`h-4 w-4 transition-all duration-300 menu-item-arrow ${isDark ? "text-emerald-300" : "text-emerald-500"
+                }`} />
+            </a>
+          </div>
+
+          {/* FAQ Menu Item */}
+          <div className="relative">
+            <a
+              href="#faq"
+              onClick={(e) => handleNavigation(e, 'faq')}
+              onTouchStart={() => handleTouchStart('faq')}
+              onTouchEnd={handleTouchEnd}
+              className={`menu-item flex items-center py-4 px-5 rounded-xl transition-all duration-300 relative overflow-hidden ${touchActiveId === 'faq' ? 'touch-active' : ''
+                } ${isDark
+                  ? "bg-gray-800/30 text-gray-200 hover:bg-gray-800/50 hover:text-purple-300"
+                  : "bg-gray-50 text-gray-700 hover:bg-gray-100 hover:text-purple-600"
+                }`}
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-400/0 via-purple-400/10 to-purple-400/0 opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
+
+              <div className={`mr-4 p-2.5 rounded-lg transition-all duration-300 menu-item-icon ${isDark
+                  ? "bg-purple-400/10"
+                  : "bg-purple-100"
+                }`}>
+                <Lightbulb className={`h-5 w-5 transition-all duration-300 menu-item-icon-inner ${isDark
+                    ? "text-purple-300"
+                    : "text-purple-600"
+                  }`} />
+              </div>
+
+              <span className="text-lg font-medium transition-all duration-300 menu-item-text flex-1">
+                FAQ
+              </span>
+
+              <ArrowRight className={`h-4 w-4 transition-all duration-300 menu-item-arrow ${isDark ? "text-purple-300" : "text-purple-500"
+                }`} />
+            </a>
+          </div>
+
+          {/* CTA Button */}
+          <div className="pt-6 mt-4 border-t border-white/10">
             {user ? (
-              <Link to="/dashboard" onClick={() => setIsMenuOpen(false)} className="block text-center px-5 py-3 w-full bg-gradient-to-r from-teal-400 to-cyan-300 text-black rounded-xl font-semibold shadow hover:scale-[1.02] transition">Dashboard</Link>
+              <Link
+                to="/dashboard"
+                onClick={() => setIsMenuOpen(false)}
+                className="flex items-center justify-center px-6 py-4 bg-gradient-to-r from-teal-400 to-cyan-300 text-black rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] active:scale-95 hover:shadow-teal-300/20"
+              >
+                <span className="flex items-center gap-2">
+                  Dashboard
+                  <ArrowRight className="h-4 w-4 transition-transform duration-300 hover:translate-x-1" />
+                </span>
+              </Link>
             ) : (
-              <Link to="/auth" onClick={() => setIsMenuOpen(false)} className="block text-center px-5 py-3 w-full bg-gradient-to-r from-teal-400 to-cyan-300 text-black rounded-xl font-semibold shadow hover:scale-[1.02] transition">Get Started</Link>
+              <Link
+                to="/auth"
+                onClick={() => setIsMenuOpen(false)}
+                className="flex items-center justify-center px-6 py-4 bg-gradient-to-r from-teal-400 to-cyan-300 text-black rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] active:scale-95 hover:shadow-teal-300/20"
+              >
+                <span className="flex items-center gap-2">
+                  Get Started
+                  <ArrowRight className="h-4 w-4 transition-transform duration-300 hover:translate-x-1" />
+                </span>
+              </Link>
             )}
-          </li>
-        </ul>
+          </div>
+
+          {/* Theme toggle */}
+          {/* Theme toggle - Mobile Menu में */}
+          <div className={`pt-6 mt-6 border-t border-white/10 flex items-center justify-between px-4 py-4 rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-95 ${isDark ? "bg-gray-800/40 hover:bg-gray-800/60" : "bg-gray-50 hover:bg-gray-100"
+            }`}>
+            <div className="flex items-center gap-3">
+              <div className={`p-2 rounded-lg ${isDark ? "bg-yellow-400/10" : "bg-yellow-100"}`}>
+                {isDark ?
+                  <Sun className="h-4 w-4 text-yellow-300" /> :
+                  <Moon className="h-4 w-4 text-blue-600" />
+                }
+              </div>
+              <span className={`text-sm font-medium ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+                {isDark ? "Dark Mode" : "Light Mode"}
+              </span>
+            </div>
+            <button
+              onClick={toggleTheme}
+              aria-label="Toggle theme"
+              className={`relative w-14 h-7 rounded-full transition-all duration-300 hover:scale-105 active:scale-95 ${isDark
+                  ? "bg-gradient-to-r from-gray-700 to-gray-800"
+                  : "bg-gradient-to-r from-gray-300 to-gray-400"
+                }`}
+            >
+              
+
+              {/* Thumb/knob with centered icon */}
+              <div className={`absolute top-1/2 w-5 h-5 rounded-full transition-all duration-300 transform -translate-y-1/2 flex items-center justify-center ${isDark
+                  ? "bg-yellow-300 left-[calc(100%-1.25rem)]"  // Right side for dark mode
+                  : "bg-blue-500 left-1"  // Left side for light mode
+                }`}>
+                {isDark ?
+                  <Sun className="h-2.5 w-2.5 text-gray-800" /> :
+                  <Moon className="h-2.5 w-2.5 text-white" />
+                }
+              </div>
+            </button>
+          </div>
+        </div>
       </div>
+
+      {/* Overlay when menu is open */}
+      {isMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 z-40 lg:hidden backdrop-blur-sm transition-all duration-300 animate-fadeIn"
+          onClick={() => setIsMenuOpen(false)}
+          aria-hidden="true"
+        />
+      )}
 
       {/* Main Content Container (No scroll-snap) */}
       <div
-        className="pt-[120px] pb-12" // Increased padding top to account for fixed header
+        className="pt-[120px] pb-12"
         role="main"
       >
         {/* HERO */}
@@ -564,12 +861,11 @@ const Landing: React.FC = () => {
           </div>
         </section>
 
-        {/* TRUSTED BY DEVELOPERS WORLDWIDE (Restored and made responsive) */}
+        {/* TRUSTED BY DEVELOPERS WORLDWIDE */}
         <section id="trusted" className="py-20 lg:py-24 fade-in" aria-label="Trusted by developers worldwide">
           <div className="max-w-7xl mx-auto px-6 w-full text-center">
             <h2 className={`text-3xl md:text-4xl font-semibold mb-12 ${t.heading}`}>Trusted by developers worldwide</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8 items-center justify-center">
-              {/* Company Logos (Responsive Grid) */}
               <div className={`p-4 rounded-xl ${isDark ? "glass" : "bg-white"} flex justify-center items-center h-16 opacity-70 hover:opacity-100 transition duration-300`}>
                 <span className={`text-2xl font-bold ${t.muted}`}>Meta</span>
               </div>
@@ -592,7 +888,6 @@ const Landing: React.FC = () => {
           </div>
         </section>
 
-
         {/* FAQ SECTION */}
         <section id="faq" className="py-20 lg:py-24 fade-in" aria-label="FAQ">
           <div className="max-w-7xl mx-auto px-6 w-full">
@@ -613,7 +908,6 @@ const Landing: React.FC = () => {
             </div>
           </div>
         </section>
-
 
         {/* CTA & FOOTER */}
         <footer id="docs" className="py-12" aria-label="Call to action and footer">

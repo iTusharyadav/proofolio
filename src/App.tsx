@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -8,34 +8,55 @@ import Auth from './pages/Auth';
 import Dashboard from './pages/Dashboard';
 import Report from './pages/Report';
 
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+
+function AppRoutes() {
+  const location = useLocation();
+
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: true,
+    });
+  }, []);
+
+  useEffect(() => {
+    AOS.refresh();
+  }, [location]);
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* <Navbar /> */}
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/auth" element={<Auth />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/report/:id"
+          element={
+            <ProtectedRoute>
+              <Report />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </div>
+  );
+}
 
 function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="min-h-screen bg-gray-50">
-          {/* <Navbar /> */}
-          <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/report/:id"
-              element={
-                <ProtectedRoute>
-                  <Report />
-                </ProtectedRoute>
-              }
-            />
-          </Routes>
-        </div>
+        <AppRoutes />
       </Router>
     </AuthProvider>
   );

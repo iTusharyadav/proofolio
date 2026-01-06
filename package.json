@@ -12,7 +12,9 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4",
+    "@types/aos": "^3.0.7",
     "@types/node": "^24.5.2",
+    "aos": "^2.3.4",
     "axios": "^1.12.2",
     "dotenv": "^17.2.3",
     "html2canvas": "^1.4.1",

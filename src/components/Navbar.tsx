@@ -45,7 +45,7 @@ export default function Navbar() {
   const isDashboard = location.pathname.startsWith("/dashboard");
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur border-b border-gray-200 dark:border-gray-700 shadow-sm transition-colors duration-300">
+    <header  className="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur border-b border-gray-200 dark:border-gray-700 shadow-sm transition-colors duration-300">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 h-16">
         {/* Brand */}
         <Link to="/" className="flex items-center gap-3">

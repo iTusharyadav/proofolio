@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BarChart3, Mail, Lock, User, CheckCircle } from 'lucide-react'; // Added CheckCircle for modal
+import { BarChart3, Mail, Lock, User, CheckCircle, X } from 'lucide-react'; // Added X for cross button
 import { useAuth } from '../contexts/AuthContext';
 
 const Auth: React.FC = () => {
@@ -42,12 +42,33 @@ const Auth: React.FC = () => {
     }
   };
 
+  // Handle close button click
+  const handleClose = () => {
+    navigate('/'); // Navigate to home page
+  };
+
+  // Handle modal close
+  const handleModalClose = () => {
+    setShowModal(false);
+    setIsSignUp(false);
+  };
+
   return (
     // 1. Sleek Background (Dark Mode Aesthetic)
     <div className="min-h-screen bg-gray-900 flex items-center justify-center px-4 py-8 md:py-16">
 
-      {/* 2. Modern Card Container */}
-      <div className="max-w-md w-full bg-gray-800 rounded-xl shadow-2xl border border-gray-700 p-6 sm:p-10 transition-all duration-500">
+      {/* 2. Modern Card Container with Close Button */}
+      <div className="relative max-w-md w-full bg-gray-800 rounded-xl shadow-2xl border border-gray-700 p-6 sm:p-10 transition-all duration-500">
+
+        {/* 🔴 NEW: Cross Button - Top Right Corner */}
+        <button
+          onClick={handleClose}
+          className="absolute -top-3 -right-3 w-8 h-8 flex items-center justify-center bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white rounded-full border border-gray-600 shadow-lg transition-all duration-200 z-10"
+          aria-label="Close"
+          type="button"
+        >
+          <X className="h-4 w-4" />
+        </button>
 
         <div className="text-center mb-8">
           {/* Logo with Tech Gradient */}
@@ -165,17 +186,25 @@ const Auth: React.FC = () => {
       {/* Modal popup for signup confirmation (Sleek Styling) */}
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50 p-4">
-          <div className="bg-gray-800 p-8 rounded-xl shadow-2xl max-w-sm text-center border border-gray-700">
+          <div className="relative bg-gray-800 p-8 rounded-xl shadow-2xl max-w-sm text-center border border-gray-700">
+            
+            {/* 🔴 NEW: Modal Close Button */}
+            <button
+              onClick={handleModalClose}
+              className="absolute -top-3 -right-3 w-8 h-8 flex items-center justify-center bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white rounded-full border border-gray-600 shadow-lg transition-all duration-200"
+              aria-label="Close modal"
+              type="button"
+            >
+              <X className="h-4 w-4" />
+            </button>
+
             <CheckCircle className="h-10 w-10 mx-auto text-teal-400 mb-4" />
             <h3 className="text-xl font-bold text-gray-100 mb-3">Verification Required</h3>
             <p className="text-gray-300">
               A confirmation email has been sent to **{email}**. Please verify your email before signing in.
             </p>
             <button
-              onClick={() => {
-                setShowModal(false);
-                setIsSignUp(false); // Switch to sign-in mode after successful signup
-              }}
+              onClick={handleModalClose}
               className="mt-6 w-full px-4 py-2 bg-teal-500 text-gray-900 rounded-lg font-semibold hover:bg-teal-600 transition"
             >
               Go to Sign In

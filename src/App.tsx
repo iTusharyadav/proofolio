@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
-import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 import ScrollToTop from './components/ScrollToTop';
 import Landing from './pages/Landing';
@@ -28,7 +27,6 @@ function AppRoutes() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* <Navbar /> */}
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Landing />} />

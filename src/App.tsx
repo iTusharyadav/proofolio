@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
-import Navbar from './components/Navbar';
+import { ThemeProvider } from './contexts/ThemeContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Landing from './pages/Landing';
 import Auth from './pages/Auth';
@@ -11,8 +11,9 @@ import Report from './pages/Report';
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
+    <ThemeProvider>
+      <AuthProvider>
+        <Router>
         <div className="min-h-screen bg-gray-50">
           {/* <Navbar /> */}
           <Routes>
@@ -36,9 +37,8 @@ function App() {
             />
           </Routes>
         </div>
-      </Router>
-    </AuthProvider>
+        </Router>
+      </AuthProvider>
+    </ThemeProvider>
   );
-}
-
-export default App;
+}export default App;

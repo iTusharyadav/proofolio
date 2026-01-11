@@ -5,16 +5,17 @@ import {
   Linkedin,
   FileText,
   Code,
-  Plus,
   Calendar,
   TrendingUp,
-  BarChart3,
   Cpu,
   ChevronLeft,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
+import { useTheme } from "../contexts/ThemeContext";
 import { supabase } from "../utils/supabase";
-import { Profile, Report } from "../types";
+import { Report } from "../types";
 import Navbar from '../components/Navbar';
 
 const formatDate = (dateString: string) => {
@@ -27,6 +28,7 @@ const formatDate = (dateString: string) => {
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
+  const { isDark, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   const [reportsState, setReportsState] = useState<Report[]>([]);
@@ -41,14 +43,13 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     if (!user) return;
-    loadInitialData();
+    const loadData = async () => {
+      setLoading(true);
+      await Promise.all([loadProfile(), loadReports()]);
+      setLoading(false);
+    };
+    loadData();
   }, [user]);
-
-  const loadInitialData = async () => {
-    setLoading(true);
-    await Promise.all([loadProfile(), loadReports()]);
-    setLoading(false);
-  };
 
   const loadProfile = async () => {
     const { data } = await supabase.from("users").select("*").eq("id", user!.id).maybeSingle();
@@ -156,17 +157,26 @@ const Dashboard: React.FC = () => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center bg-gray-900 text-teal-400">Loading Proofolio...</div>;
+  if (loading) return <div className="min-h-screen flex items-center justify-center bg-gray-900 dark:bg-gray-900 text-teal-400">Loading Proofolio...</div>;
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100 pt-16 pb-12">
-      <Navbar showSignOut={false} />
+    <div className={`min-h-screen ${isDark ? 'bg-gray-900 text-gray-100' : 'bg-gray-50 text-gray-900'} pt-16 pb-12`}>
+      <Navbar />
       <div className="max-w-7xl mx-auto px-4 space-y-10 mt-8">
         <div className="flex items-center justify-between">
-          <button onClick={() => navigate(-1)} className="flex items-center text-teal-400 hover:text-teal-300 text-sm font-medium">
+          <button onClick={() => navigate(-1)} className={`flex items-center ${isDark ? 'text-teal-400 hover:text-teal-300' : 'text-teal-600 hover:text-teal-500'} text-sm font-medium`}>
             <ChevronLeft className="h-5 w-5 mr-1" /> Go Back
           </button>
-          <h1 className="text-4xl font-extrabold text-teal-300">Dashboard</h1>
+          <div className="flex items-center gap-4">
+            <h1 className={`text-4xl font-extrabold ${isDark ? 'text-teal-300' : 'text-teal-600'}`}>Dashboard</h1>
+            <button 
+              onClick={toggleTheme}
+              className={`p-2 rounded-lg ${isDark ? 'bg-gray-800 hover:bg-gray-700' : 'bg-white hover:bg-gray-100'} border ${isDark ? 'border-gray-700' : 'border-gray-200'}`}
+              aria-label="Toggle theme"
+            >
+              {isDark ? <Sun className="h-5 w-5 text-yellow-400" /> : <Moon className="h-5 w-5 text-blue-600" />}
+            </button>
+          </div>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
@@ -187,9 +197,9 @@ const Dashboard: React.FC = () => {
                   <input
                     type="url"
                     name={input.name}
-                    value={(formData as any)[input.name]}
+                    value={formData[input.name as keyof typeof formData]}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-lg bg-gray-700 text-gray-100 border-gray-600 outline-none focus:ring-2 focus:ring-teal-500"
+                    className={`w-full px-4 py-3 rounded-lg ${isDark ? 'bg-gray-700 text-gray-100 border-gray-600' : 'bg-gray-100 text-gray-900 border-gray-300'} border outline-none focus:ring-2 focus:ring-teal-500`}
                   />
                 </div>
               ))}
@@ -204,13 +214,13 @@ const Dashboard: React.FC = () => {
           </div>
 
           {/* History - Delete Icon Removed */}
-          <div className="bg-gray-800 rounded-2xl border border-gray-700 p-8">
+          <div className={`${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-2xl border p-8`}>
             <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2 border-b border-gray-700 pb-3">
               <TrendingUp className="h-5 w-5 text-teal-400" /> History
             </h2>
             <div className="space-y-4">
               {reportsState.map((r) => (
-                <Link to={`/report/${r.id}`} key={r.id} className="flex items-center gap-4 p-4 rounded-xl bg-gray-700/50 hover:bg-gray-700 border border-gray-700 transition">
+                <Link to={`/report/${r.id}`} key={r.id} className={`flex items-center gap-4 p-4 rounded-xl ${isDark ? 'bg-gray-700/50 hover:bg-gray-700 border-gray-700' : 'bg-gray-100 hover:bg-gray-200 border-gray-200'} border transition`}>
                   <div className="text-xl font-black text-gray-900 w-12 h-12 flex items-center justify-center rounded-lg bg-teal-400">
                     {r.total_score}
                   </div>

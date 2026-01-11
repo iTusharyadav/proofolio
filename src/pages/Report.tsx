@@ -14,7 +14,11 @@ import {
   BookOpen,
   Code,
   Lightbulb,
+  Sun,
+  Moon,
+  Loader,
 } from 'lucide-react';
+import { useTheme } from '../contexts/ThemeContext';
 import { supabase } from '../utils/supabase';
 import Navbar from '../components/Navbar';
 
@@ -54,6 +58,7 @@ interface ReportData {
 const Report: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { isDark, toggleTheme } = useTheme();
 
   const [report, setReport] = useState<ReportData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -84,15 +89,18 @@ const Report: React.FC = () => {
   // --------------------
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center text-teal-400">
-        Analyzing Data...
+      <div className={`min-h-screen ${isDark ? 'bg-gray-900' : 'bg-gray-50'} flex items-center justify-center`}>
+        <div className="flex flex-col items-center gap-4">
+          <Loader className={`h-8 w-8 animate-spin ${isDark ? 'text-teal-400' : 'text-teal-600'}`} />
+          <p className={isDark ? 'text-gray-400' : 'text-gray-600'}>Analyzing Data...</p>
+        </div>
       </div>
     );
   }
 
   if (!report) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center text-gray-400">
+      <div className={`min-h-screen ${isDark ? 'bg-gray-900 text-gray-400' : 'bg-gray-50 text-gray-600'} flex items-center justify-center`}>
         Report not found
       </div>
     );
@@ -114,23 +122,32 @@ const Report: React.FC = () => {
   // UI
   // --------------------
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100">
-      <Navbar showSignOut={false} />
+    <div className={`min-h-screen ${isDark ? 'bg-gray-900 text-gray-100' : 'bg-gray-50 text-gray-900'}`}>
+      <Navbar />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16">
         {/* Back */}
-        <button
-          onClick={() => navigate('/dashboard')}
-          className="flex items-center gap-1 text-teal-400 mb-6 text-sm"
-        >
-          <ChevronLeft size={16} /> Back to Dashboard
-        </button>
+        <div className="flex items-center justify-between mb-8">
+          <button
+            onClick={() => navigate('/dashboard')}
+            className={`flex items-center gap-1 ${isDark ? 'text-teal-400 hover:text-teal-300' : 'text-teal-600 hover:text-teal-500'} text-sm`}
+          >
+            <ChevronLeft size={16} /> Back to Dashboard
+          </button>
+          <button 
+            onClick={toggleTheme}
+            className={`p-2 rounded-lg ${isDark ? 'bg-gray-800 hover:bg-gray-700' : 'bg-white hover:bg-gray-100'} border ${isDark ? 'border-gray-700' : 'border-gray-200'}`}
+            aria-label="Toggle theme"
+          >
+            {isDark ? <Sun className="h-5 w-5 text-yellow-400" /> : <Moon className="h-5 w-5 text-blue-600" />}
+          </button>
+        </div>
 
         {/* Top Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
           {/* Overall Score */}
-          <div className="bg-gray-800 p-6 sm:p-8 rounded-3xl border border-gray-700 flex flex-col items-center justify-center">
-            <h2 className="text-gray-400 uppercase tracking-widest text-xs sm:text-sm mb-4">
+          <div className={`${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} p-6 sm:p-8 rounded-3xl border flex flex-col items-center justify-center`}>
+            <h2 className={`${isDark ? 'text-gray-400' : 'text-gray-600'} uppercase tracking-widest text-xs sm:text-sm mb-4`}>
               Overall DevScore
             </h2>
 
@@ -143,7 +160,7 @@ const Report: React.FC = () => {
                   stroke="currentColor"
                   strokeWidth="10"
                   fill="transparent"
-                  className="text-gray-700"
+                  className={isDark ? "text-gray-700" : "text-gray-300"}
                 />
                 <circle
                   cx="50%"
@@ -167,13 +184,13 @@ const Report: React.FC = () => {
           </div>
 
           {/* Radar Chart */}
-          <div className="bg-gray-800 p-4 sm:p-6 rounded-3xl border border-gray-700 h-72 sm:h-80">
+          <div className={`${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} p-4 sm:p-6 rounded-3xl border h-72 sm:h-80`}>
             <ResponsiveContainer width="100%" height="100%">
               <RadarChart data={chartData} outerRadius="75%">
-                <PolarGrid stroke="#374151" />
+                <PolarGrid stroke={isDark ? "#374151" : "#e5e7eb"} />
                 <PolarAngleAxis
                   dataKey="subject"
-                  tick={{ fill: '#9CA3AF', fontSize: 11 }}
+                  tick={{ fill: isDark ? '#9CA3AF' : '#6B7280', fontSize: 11 }}
                 />
                 <Radar
                   dataKey="score"
@@ -199,16 +216,15 @@ const Report: React.FC = () => {
             return (
               <div
                 key={section.id}
-                className="bg-gray-800 p-5 rounded-2xl border border-gray-700 flex flex-col"
+                className={`${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} p-5 rounded-2xl border flex flex-col`}
               >
                 <div className="flex justify-between items-start mb-3">
                   <div className="flex items-center gap-2">
-                    <section.icon className="text-teal-400" size={18} />
+                    <section.icon className={isDark ? "text-teal-400" : "text-teal-600"} size={18} />
                     <h3 className="font-bold text-lg">{section.title}</h3>
                   </div>
                   <span
-                    className={`text-xl font-black ${hasData ? 'text-teal-400' : 'text-gray-600'
-                      }`}
+                    className={`text-xl font-black ${hasData ? (isDark ? 'text-teal-400' : 'text-teal-600') : (isDark ? 'text-gray-600' : 'text-gray-400')}`}
                   >
                     {hasData ? section.score : 'N/A'}
                   </span>
@@ -217,34 +233,34 @@ const Report: React.FC = () => {
                 {hasData ? (
                   <>
                     {section.id === 'github' && section.data.metrics && (
-                      <div className="grid grid-cols-3 gap-2 mb-3 bg-gray-900/50 p-3 rounded-xl text-center">
+                      <div className={`grid grid-cols-3 gap-2 mb-3 ${isDark ? 'bg-gray-900/50' : 'bg-gray-100/50'} p-3 rounded-xl text-center`}>
                         <div>
-                          <p className="text-[10px] text-gray-500">Repos</p>
-                          <p className="font-bold text-teal-400">
+                          <p className={`text-[10px] ${isDark ? 'text-gray-500' : 'text-gray-600'}`}>Repos</p>
+                          <p className={`font-bold ${isDark ? 'text-teal-400' : 'text-teal-600'}`}>
                             {section.data.metrics.repos}
                           </p>
                         </div>
                         <div>
-                          <p className="text-[10px] text-gray-500">Stars</p>
-                          <p className="font-bold text-teal-400">
+                          <p className={`text-[10px] ${isDark ? 'text-gray-500' : 'text-gray-600'}`}>Stars</p>
+                          <p className={`font-bold ${isDark ? 'text-teal-400' : 'text-teal-600'}`}>
                             {section.data.metrics.stars}
                           </p>
                         </div>
                         <div>
-                          <p className="text-[10px] text-gray-500">Commits</p>
-                          <p className="font-bold text-teal-400">
+                          <p className={`text-[10px] ${isDark ? 'text-gray-500' : 'text-gray-600'}`}>Commits</p>
+                          <p className={`font-bold ${isDark ? 'text-teal-400' : 'text-teal-600'}`}>
                             {section.data.metrics.commits}
                           </p>
                         </div>
                       </div>
                     )}
 
-                    <p className="text-gray-400 text-xs italic mb-3">
-                      “{section.data.review}”
+                    <p className={`${isDark ? 'text-gray-400' : 'text-gray-600'} text-xs italic mb-3`}>
+                      "{section.data.review}"
                     </p>
 
                     <div className="mt-auto">
-                      <div className="flex items-center gap-2 text-teal-300 text-[10px] font-bold uppercase mb-1">
+                      <div className={`flex items-center gap-2 ${isDark ? 'text-teal-300' : 'text-teal-600'} text-[10px] font-bold uppercase mb-1`}>
                         <Lightbulb size={12} /> Suggestions
                       </div>
                       <ul className="text-xs text-gray-300 list-disc list-inside space-y-1">
@@ -256,7 +272,7 @@ const Report: React.FC = () => {
                   </>
                 ) : (
                   <div className="flex-1 flex flex-col items-center justify-center text-center">
-                    <p className="text-gray-500 text-sm italic">
+                    <p className={`${isDark ? 'text-gray-500' : 'text-gray-600'} text-sm italic`}>
                       No data provided
                     </p>
                     <button className="mt-2 text-xs text-teal-500 hover:underline">

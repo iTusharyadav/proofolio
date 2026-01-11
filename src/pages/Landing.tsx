@@ -27,7 +27,7 @@ const FAQItem: React.FC<{ question: string; answer: string; isDark: boolean; }> 
   const t = { muted: isDark ? "text-gray-400" : "text-gray-500" };
 
   return (
-    <details className={`${isDark ? "glass hover:glass-strong" : "bg-white border border-gray-100 hover:border-gray-300"} rounded-lg p-5 transition-all duration-300`}>
+    <details data-aos="fade-up" className={`${isDark ? "glass hover:glass-strong" : "bg-white border border-gray-100 hover:border-gray-300"} rounded-lg p-5 transition-all duration-300`}>
       <summary className={`font-semibold cursor-pointer flex items-center justify-between transition-colors`}>
         <span className="flex-1">{question}</span>
         <span className={`ml-3 text-lg ${isDark ? "text-teal-300" : "text-teal-600"}`}>+</span>
@@ -98,52 +98,26 @@ const Landing: React.FC = () => {
     }
   };
 
-  // fade-in observer
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) (entry.target as HTMLElement).classList.add("in-view");
-        });
-      },
-      { threshold: 0.14, rootMargin: `-${HEADER_HEIGHT}px 0px -${HEADER_HEIGHT}px 0px` }
-    );
-    document.querySelectorAll(".fade-in").forEach((el) => obs.observe(el));
-    return () => document.querySelectorAll(".fade-in").forEach((el) => obs.unobserve(el));
-  }, []);
-
-  // Handle touch events for mobile menu items
-  const handleTouchStart = (id: string) => {
-    setTouchActiveId(id);
-  };
-
-  const handleTouchEnd = () => {
-    setTimeout(() => setTouchActiveId(null), 150);
-  };
-
   // small inline CSS to keep everything inside the file (glass, float, snap fine-tuning)
   const inlineStyles = `
-    /* float */
-    @keyframes floatY { 0% { transform: translateY(0); } 50% { transform: translateY(-8px);} 100% { transform: translateY(0);} }
-    .float-slow { animation: floatY 6s ease-in-out infinite; }
+      /* float */
+      @keyframes floatY { 0% { transform: translateY(0); } 50% { transform: translateY(-8px);} 100% { transform: translateY(0);} }
+      .float-slow { animation: floatY 6s ease-in-out infinite; }
 
-    /* fade-in helper */
-    .fade-in { opacity: 0; transform: translateY(8px); transition: opacity .45s ease, transform .45s cubic-bezier(.2,.9,.2,1); will-change: opacity, transform; }
-    .fade-in.in-view { opacity: 1; transform: translateY(0); }
+      /* small nav outline removal for the centered nav look */
+      .nav-outline { box-shadow: 0 8px 32px rgba(2,6,23,0.45); border: 1px solid rgba(255,255,255,0.04); }
 
-    /* small nav outline removal for the centered nav look */
-    .nav-outline { box-shadow: 0 8px 32px rgba(2,6,23,0.45); border: 1px solid rgba(255,255,255,0.04); }
+      /* make anchor jumps smooth and avoid tiny flicker */
+      html { scroll-behavior: smooth; }
 
-    /* make anchor jumps smooth and avoid tiny flicker */
-    html { scroll-behavior: smooth; }
-
-    /* Subtle Shine Effect for professional polish */
-    .shine-effect { 
+      /* Subtle Shine Effect for professional polish */
+      .shine-effect { 
         position: relative; 
         overflow: hidden;
         transition: all 0.3s ease;
-    }
-    .shine-effect::before {
+      }
+        
+      .shine-effect::before {
         content: '';
         position: absolute;
         top: 0;
@@ -153,77 +127,17 @@ const Landing: React.FC = () => {
         background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0) 100%);
         transform: skewX(-30deg);
         transition: all 0.5s ease;
-    }
-    .shine-effect:hover::before {
-        left: 150%;
-    }
+      }
 
-    /* Mobile Menu Hover Effects - Desktop only */
-    @media (hover: hover) and (pointer: fine) {
-      .menu-item:hover {
-        transform: scale(1.02);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      .shine-effect:hover::before {
+        left: 150%;
       }
-      
-      .menu-item:hover .menu-item-icon {
-        transform: scale(1.1) rotate(3deg);
-        background: linear-gradient(135deg, rgba(20, 184, 166, 0.2), rgba(6, 182, 212, 0.2));
+
+      /* Card glow on hover (dark mode only) */
+      .card-glow-hover:hover {
+        box-shadow: 0 0 40px rgba(52, 211, 163, 0.15), 0 0 10px rgba(52, 211, 163, 0.1); /* Teal glow */
       }
-      
-      .menu-item:hover .menu-item-icon-inner {
-        color: rgb(94 234 212);
-      }
-      
-      .menu-item:hover .menu-item-text {
-        transform: translateX(8px);
-      }
-      
-      .menu-item:hover .menu-item-arrow {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-    
-    .menu-item-arrow {
-      opacity: 0;
-      transform: translateX(-8px);
-    }
-    
-    /* Mobile touch feedback */
-    .menu-item.touch-active {
-      transform: scale(0.98);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    }
-    
-    .menu-item.touch-active .menu-item-icon {
-      transform: scale(0.95);
-      background: linear-gradient(135deg, rgba(20, 184, 166, 0.3), rgba(6, 182, 212, 0.3));
-    }
-    
-    .menu-item.touch-active .menu-item-icon-inner {
-      color: rgb(94 234 212) !important;
-    }
-    
-    .menu-item.touch-active .menu-item-text {
-      transform: translateX(4px);
-    }
-    
-    .menu-item.touch-active .menu-item-arrow {
-      opacity: 0.8;
-      transform: translateX(2px);
-    }
-    
-    /* For light mode adjustments */
-    .light .menu-item:hover .menu-item-icon-inner,
-    .light .menu-item.touch-active .menu-item-icon-inner {
-      color: rgb(13 148 136);
-    }
-    
-    /* Card glow on hover (dark mode only) */
-    .card-glow-hover:hover {
-        box-shadow: 0 0 40px rgba(52, 211, 163, 0.15), 0 0 10px rgba(52, 211, 163, 0.1);
-    }
-  `;
+    `;
 
   const isDark = theme === "dark";
 
@@ -263,7 +177,7 @@ const Landing: React.FC = () => {
       <style>{inlineStyles}</style>
 
       {/* Centered rounded navbar (single nav) */}
-      <header className="fixed top-6 left-0 w-full z-50 flex justify-center">
+      <header data-aos="fade-down" className="fixed top-6 left-0 w-full z-50 flex justify-center">
         <nav
           className={`nav-outline pointer-events-auto ${isDark ? "bg-neutral-900/80" : "bg-white/95"} backdrop-blur-md rounded-3xl px-4 sm:px-8 py-3 flex items-center justify-between w-[95%] max-w-6xl transition-all duration-300`}
           role="navigation"
@@ -317,13 +231,9 @@ const Landing: React.FC = () => {
 
       {/* Mobile Sidebar Menu - Touch Optimized */}
       <div
-        className={`fixed top-0 right-0 h-full w-72 z-50 lg:hidden transition-all duration-300 ease-in-out ${isMenuOpen
-            ? 'translate-x-0 opacity-100 backdrop-blur-sm'
-            : 'translate-x-full opacity-0 pointer-events-none backdrop-blur-0'
-          } ${isDark
-            ? "bg-gradient-to-b from-gray-900 via-gray-900/95 to-gray-900/90 border-l border-white/10"
-            : "bg-gradient-to-b from-white via-white/95 to-white/90 border-l border-gray-200"
-          } shadow-2xl`}
+        data-aos="fade-in"
+        className={`fixed top-0 left-0 w-full pt-[100px] pb-6 z-40 lg:hidden transition-all duration-300 ${isMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0 pointer-events-none'
+          } ${isDark ? "bg-gray-900/95 backdrop-blur-md" : "bg-white/95 backdrop-blur-md"}`}
       >
         {/* Header with close button */}
         <div className="flex justify-end items-center p-6 border-b border-white/10">
@@ -345,9 +255,6 @@ const Landing: React.FC = () => {
           <div className="relative">
             <a
               href="#features"
-              onClick={(e) => handleNavigation(e, 'features')}
-              onTouchStart={() => handleTouchStart('features')}
-              onTouchEnd={handleTouchEnd}
               className={`menu-item flex items-center py-4 px-5 rounded-xl transition-all duration-300 relative overflow-hidden ${touchActiveId === 'features' ? 'touch-active' : ''
                 } ${isDark
                   ? "bg-gray-800/30 text-gray-200 hover:bg-gray-800/50 hover:text-teal-300"
@@ -379,9 +286,6 @@ const Landing: React.FC = () => {
           <div className="relative">
             <a
               href="#how"
-              onClick={(e) => handleNavigation(e, 'how')}
-              onTouchStart={() => handleTouchStart('how')}
-              onTouchEnd={handleTouchEnd}
               className={`menu-item flex items-center py-4 px-5 rounded-xl transition-all duration-300 relative overflow-hidden ${touchActiveId === 'how' ? 'touch-active' : ''
                 } ${isDark
                   ? "bg-gray-800/30 text-gray-200 hover:bg-gray-800/50 hover:text-cyan-300"
@@ -413,9 +317,6 @@ const Landing: React.FC = () => {
           <div className="relative">
             <a
               href="#why"
-              onClick={(e) => handleNavigation(e, 'why')}
-              onTouchStart={() => handleTouchStart('why')}
-              onTouchEnd={handleTouchEnd}
               className={`menu-item flex items-center py-4 px-5 rounded-xl transition-all duration-300 relative overflow-hidden ${touchActiveId === 'why' ? 'touch-active' : ''
                 } ${isDark
                   ? "bg-gray-800/30 text-gray-200 hover:bg-gray-800/50 hover:text-emerald-300"
@@ -447,9 +348,6 @@ const Landing: React.FC = () => {
           <div className="relative">
             <a
               href="#faq"
-              onClick={(e) => handleNavigation(e, 'faq')}
-              onTouchStart={() => handleTouchStart('faq')}
-              onTouchEnd={handleTouchEnd}
               className={`menu-item flex items-center py-4 px-5 rounded-xl transition-all duration-300 relative overflow-hidden ${touchActiveId === 'faq' ? 'touch-active' : ''
                 } ${isDark
                   ? "bg-gray-800/30 text-gray-200 hover:bg-gray-800/50 hover:text-purple-300"
@@ -562,7 +460,7 @@ const Landing: React.FC = () => {
         <section id="hero" className="min-h-[calc(100vh-120px)] flex items-center" aria-label="Hero">
           <div className="max-w-7xl mx-auto px-6 w-full">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center py-12 lg:py-0">
-              <div className="lg:col-span-6 space-y-6 fade-in">
+              <div data-aos="fade-right" className="lg:col-span-6 space-y-6">
                 <div className={`${isDark ? "bg-gradient-to-r from-teal-500/10 to-cyan-400/5 text-teal-200 glass" : "bg-teal-50 text-teal-700 border border-teal-100"} inline-flex items-center gap-3 px-3 py-1 rounded-full text-sm`}>
                   <span className="font-semibold">New</span>
                   <span className={`${t.sub} text-xs`}>AI-assisted repo scoring • Secure & private</span>
@@ -624,7 +522,7 @@ const Landing: React.FC = () => {
               </div>
 
               {/* Right preview card (Hidden on small screens, shown on tablet/desktop) */}
-              <div className="lg:col-span-6 hidden md:block relative fade-in">
+              <div data-aos="fade-left" className="lg:col-span-6 hidden md:block relative">
                 <div className="absolute -right-20 -top-24 w-96 h-96 rounded-full bg-gradient-to-br from-teal-400/12 to-cyan-400/10 blur-3xl pointer-events-none" />
                 <div className="absolute -left-28 bottom-8 w-72 h-72 rounded-full bg-gradient-to-br from-purple-500/8 to-pink-400/8 blur-3xl pointer-events-none" />
 
@@ -753,15 +651,15 @@ const Landing: React.FC = () => {
         </section>
 
         {/* FEATURES */}
-        <section id="features" className="py-20 lg:py-24 fade-in" aria-label="Features">
-          <div className="max-w-7xl mx-auto px-6 w-full">
+        <section id="features" className="py-20 lg:py-24" aria-label="Features">
+          <div data-aos="fade-in" className="max-w-7xl mx-auto px-6 w-full">
             <div className="flex flex-col sm:flex-row items-center justify-between mb-12 gap-4">
               <h2 className={`text-3xl md:text-4xl font-semibold ${t.heading}`}>What DevScore analyzes</h2>
               <button onClick={() => setShowDocPopup(true)} className={`hidden sm:block ${isDark ? "glass" : "bg-white border border-gray-200"} px-3 py-2 rounded-lg hover:scale-105 transition`}>Documentation</button>
             </div>
 
             {/* Layout: Optimised for all screen sizes */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-6">
+            <div data-aos="fade-up" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-6">
               {[
                 { icon: <Github className="h-6 w-6" />, title: "GitHub Activity", desc: "Repos, stars, commit patterns, PR cadence and code health." },
                 { icon: <Linkedin className="h-6 w-6" />, title: "LinkedIn Network", desc: "Profile completeness, endorsements, engagement and network growth." },
@@ -787,7 +685,7 @@ const Landing: React.FC = () => {
         <section id="how" className="py-20 lg:py-24" aria-label="How it works">
           <div className="max-w-7xl mx-auto px-6 w-full">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div className="space-y-6 fade-in">
+              <div data-aos="fade-right" className="space-y-6">
                 <h2 className={`text-3xl md:text-4xl font-semibold ${t.heading}`}>How it works</h2>
                 <p className={`${t.sub} text-lg max-w-xl`}>
                   DevScore combines heuristics and heuristic-augmented AI to evaluate developer profiles. The scoring logic runs server-side using a secure service key — only the final reports are stored in your account.
@@ -830,7 +728,7 @@ const Landing: React.FC = () => {
                 </div>
               </div>
 
-              <div className={`h-full flex items-center justify-center fade-in mt-10 lg:mt-0`}>
+              <div data-aos="fade-left" className={`h-full flex items-center justify-center mt-10 lg:mt-0`}>
                 <div className={`p-8 rounded-2xl shadow-2xl w-full max-w-sm ${isDark ? "glass-strong border border-white/10" : "bg-white border border-gray-100"}`}>
                   <div className="text-center">
                     <div className={`${t.muted} text-xs uppercase font-bold`}>Free Access</div>
@@ -858,7 +756,7 @@ const Landing: React.FC = () => {
         {/* WHY US */}
         <section id="why" className="py-20 lg:py-24" aria-label="Why choose us">
           <div className="max-w-7xl mx-auto px-6 w-full">
-            <h2 className={`text-3xl md:text-4xl font-semibold mb-12 text-center ${t.heading} fade-in`}>The DevScore Advantage</h2>
+            <h2 data-aos="fade-in" className={`text-3xl md:text-4xl font-semibold mb-12 text-center ${t.heading}`}>The DevScore Advantage</h2>
             <div className="grid md:grid-cols-3 gap-8">
               {[
                 { icon: <BarChart3 className="w-6 h-6 text-teal-300" />, title: "Accurate & Actionable", desc: "We don't just give a number — we provide clear, personalized steps to improve your profile and career growth.", animationDelay: "0s" },
@@ -867,7 +765,8 @@ const Landing: React.FC = () => {
               ].map((item, i) => (
                 <div
                   key={i}
-                  className={`shine-effect card-glow-hover ${isDark ? "glass border border-white/5" : "bg-white border border-gray-100"} rounded-2xl p-8 shadow-xl transform hover:-translate-y-2 transition-all duration-500 fade-in`}
+                  data-aos={i % 2 === 0 ? "fade-up" : "fade-down"}
+                  className={`shine-effect card-glow-hover ${isDark ? "glass border border-white/5" : "bg-white border border-gray-100"} rounded-2xl p-8 shadow-xl hover:-translate-y-2 transition-all duration-500`}
                   style={{ transitionDelay: item.animationDelay }}
                 >
                   <div className="w-14 h-14 rounded-full flex items-center justify-center mb-4 bg-gradient-to-r from-teal-500/10 to-cyan-500/10">
@@ -881,37 +780,29 @@ const Landing: React.FC = () => {
           </div>
         </section>
 
-        {/* TRUSTED BY DEVELOPERS WORLDWIDE */}
-        <section id="trusted" className="py-20 lg:py-24 fade-in" aria-label="Trusted by developers worldwide">
+        {/* TRUSTED BY DEVELOPERS WORLDWIDE (Restored and made responsive) */}
+        <section id="trusted" className="py-20 lg:py-24" aria-label="Trusted by developers worldwide">
           <div className="max-w-7xl mx-auto px-6 w-full text-center">
-            <h2 className={`text-3xl md:text-4xl font-semibold mb-12 ${t.heading}`}>Trusted by developers worldwide</h2>
+            <h2 data-aos="fade-in" className={`text-3xl md:text-4xl font-semibold mb-12 ${t.heading}`}>Trusted by developers worldwide</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8 items-center justify-center">
-              <div className={`p-4 rounded-xl ${isDark ? "glass" : "bg-white"} flex justify-center items-center h-16 opacity-70 hover:opacity-100 transition duration-300`}>
-                <span className={`text-2xl font-bold ${t.muted}`}>Meta</span>
-              </div>
-              <div className={`p-4 rounded-xl ${isDark ? "glass" : "bg-white"} flex justify-center items-center h-16 opacity-70 hover:opacity-100 transition duration-300`}>
-                <span className={`text-2xl font-bold ${t.muted}`}>Amazon</span>
-              </div>
-              <div className={`p-4 rounded-xl ${isDark ? "glass" : "bg-white"} flex justify-center items-center h-16 opacity-70 hover:opacity-100 transition duration-300`}>
-                <span className={`text-2xl font-bold ${t.muted}`}>Google</span>
-              </div>
-              <div className={`p-4 rounded-xl ${isDark ? "glass" : "bg-white"} flex justify-center items-center h-16 opacity-70 hover:opacity-100 transition duration-300`}>
-                <span className={`text-2xl font-bold ${t.muted}`}>Stripe</span>
-              </div>
-              <div className={`p-4 rounded-xl ${isDark ? "glass" : "bg-white"} flex justify-center items-center h-16 opacity-70 hover:opacity-100 transition duration-300`}>
-                <span className={`text-2xl font-bold ${t.muted}`}>OpenAI</span>
-              </div>
-              <div className={`p-4 rounded-xl ${isDark ? "glass" : "bg-white"} flex justify-center items-center h-16 opacity-70 hover:opacity-100 transition duration-300`}>
-                <span className={`text-2xl font-bold ${t.muted}`}>Netflix</span>
-              </div>
+              {/* Company Logos (Responsive Grid) */}
+              {['Meta', 'Amazon', 'Google', 'Stripe', 'OpenAI', 'Netflix'].map((company, index, arr) => {
+                const half = Math.ceil(arr.length / 2)
+
+                return (
+                  <div data-aos={index < half ? 'fade-right' : 'fade-left'} key={index} className={`p-4 rounded-xl ${isDark ? "glass" : "bg-white"} flex justify-center items-center h-16 opacity-70 hover:opacity-100 transition duration-300`}>
+                    <span className={`text-2xl font-bold ${t.muted}`}>{company}</span>
+                  </div>
+                )
+              })}
             </div>
           </div>
         </section>
 
         {/* FAQ SECTION */}
-        <section id="faq" className="py-20 lg:py-24 fade-in" aria-label="FAQ">
+        <section id="faq" className="py-20 lg:py-24" aria-label="FAQ">
           <div className="max-w-7xl mx-auto px-6 w-full">
-            <h2 className={`text-3xl md:text-4xl font-semibold mb-12 text-center ${t.heading}`}>Frequently Asked Questions</h2>
+            <h2 data-aos="fade-in" className={`text-3xl md:text-4xl font-semibold mb-12 text-center ${t.heading}`}>Frequently Asked Questions</h2>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-4">
                 <FAQItem question="How is the Developer Score calculated?" answer="The score is a complex, weighted combination of GitHub activity (commits, stars, code quality), LinkedIn presence (experience, endorsements), blogging metrics, and competitive coding performance. The algorithm is proprietary and uses heuristic-augmented AI." isDark={isDark} />
@@ -934,24 +825,28 @@ const Landing: React.FC = () => {
           <div className="max-w-7xl mx-auto px-6 w-full">
             {/* CTA Box */}
             <div className={`py-16 text-center rounded-3xl mb-16 shadow-2xl ${isDark ? "bg-gray-800/70 border border-white/10" : "bg-white border border-gray-100"} transform hover:scale-[1.005] transition`}>
-              <h2 className="text-4xl md:text-5xl font-extrabold mb-4">Ready to discover your developer score?</h2>
-              <p className={`${t.sub} text-lg max-w-2xl mx-auto mb-8`}>Stop guessing where you stand. Get your personalized report and improvement plan in under 60 seconds.</p>
+              <h2 data-aos="fade-in" className="text-4xl md:text-5xl font-extrabold mb-4">Ready to discover your developer score?</h2>
+              <p data-aos="fade-out" className={`${t.sub} text-lg max-w-2xl mx-auto mb-8`}>Stop guessing where you stand. Get your personalized report and improvement plan in under 60 seconds.</p>
               {!user && (
-                <Link to="/auth" className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-teal-400 to-cyan-300 text-black rounded-lg font-bold text-lg shadow-lg hover:shadow-xl hover:scale-[1.02] transition">Get Started Free</Link>
+                <Link data-aos="zoom-in" to="/auth" className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-teal-400 to-cyan-300 text-black rounded-lg font-bold text-lg shadow-lg hover:shadow-xl hover:scale-[1.02] transition">Get Started Free</Link>
               )}
             </div>
 
             {/* Footer Content */}
             <div className={`border-t ${isDark ? "border-white/6" : "border-gray-200"} pt-10`}>
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-                <div className="flex items-center gap-4">
-                  <div className="rounded-md p-2 bg-gradient-to-br from-teal-400/20 to-cyan-300/10">
-                    <BarChart3 className="h-6 w-6 text-teal-300" />
+              <div data-aos="fade-up" className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                <div>
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="rounded-md p-2 bg-gradient-to-br from-teal-400/20 to-cyan-300/10">
+                      <BarChart3 className="h-6 w-6 text-teal-300" />
+                    </div>
+                    <div>
+                      <div className="font-semibold">DevScore</div>
+                      <div className={`${t.muted} text-sm`}>Analyze. Improve. Grow.</div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="font-semibold">DevScore</div>
-                    <div className={`${t.muted} text-sm`}>Analyze. Improve. Grow.</div>
-                  </div>
+                  
+                  <div className={`${t.muted} mt-6 text-xs`}>© {new Date().getFullYear()} DevScore — All rights reserved.</div>
                 </div>
 
                 <div className="flex gap-4">
@@ -960,8 +855,6 @@ const Landing: React.FC = () => {
                   <a className={`${t.muted} text-sm hover:text-teal-300 transition`} href="https://github.com/iTusharyadav/proofolio/blob/main/README.md" target="_blank" rel="noreferrer">Docs</a>
                 </div>
               </div>
-
-              <div className={`${t.muted} mt-6 text-xs`}>© {new Date().getFullYear()} DevScore — All rights reserved.</div>
             </div>
           </div>
         </footer>

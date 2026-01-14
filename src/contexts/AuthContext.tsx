@@ -13,6 +13,7 @@ interface AuthContextType {
   signUp: (email: string, password: string, username: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
+  signInWithGoogle: () => Promise<void>; // Login with Google
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -34,10 +35,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(
         session?.user
           ? {
-              id: session.user.id,
-              email: session.user.email ?? null, // ✅ FIX HERE
-              username: session.user.user_metadata?.username,
-            }
+            id: session.user.id,
+            email: session.user.email ?? null, // ✅ FIX HERE
+            username: session.user.user_metadata?.username,
+          }
           : null
       );
       setLoading(false);
@@ -49,10 +50,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(
         session?.user
           ? {
-              id: session.user.id,
-              email: session.user.email ?? null, // ✅ AND HERE
-              username: session.user.user_metadata?.username,
-            }
+            id: session.user.id,
+            email: session.user.email ?? null, // ✅ AND HERE
+            username: session.user.user_metadata?.username,
+          }
           : null
       );
     });
@@ -81,8 +82,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (error) throw error;
   };
 
+  const signInWithGoogle = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.origin,
+      },
+    });
+
+    if (error) throw error;
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, signUp, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, loading, signUp, signIn, signOut, signInWithGoogle }}>
       {children}
     </AuthContext.Provider>
   );

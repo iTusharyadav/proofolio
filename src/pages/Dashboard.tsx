@@ -15,7 +15,7 @@ import {
 import { useAuth } from "../contexts/AuthContext";
 import { supabase } from "../utils/supabase";
 import { Profile, Report } from "../types";
-import Navbar from '../components/Navbar';
+import Navbar from "../components/common/Navbar";
 
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString('en-US', {
@@ -160,7 +160,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100 pt-16 pb-12">
-      <Navbar showSignOut={false} />
+      <Navbar/>
       <div className="max-w-7xl mx-auto px-4 space-y-10 mt-8">
         <div className="flex items-center justify-between">
           <button onClick={() => navigate(-1)} className="flex items-center text-teal-400 hover:text-teal-300 text-sm font-medium">

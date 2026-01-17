@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BarChart3, Mail, Lock, User, CheckCircle, X } from 'lucide-react'; // Added X for cross button
+import { BarChart3, Mail, Lock, User, CheckCircle, X, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 const Auth: React.FC = () => {
@@ -10,6 +10,7 @@ const Auth: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // New state for password visibility
 
   const { signUp, signIn } = useAuth();
   const navigate = useNavigate();
@@ -22,19 +23,14 @@ const Auth: React.FC = () => {
 
     try {
       if (isSignUp) {
-        // Call signUp without destructuring
         const result = await signUp(email, password);
-        // If your signUp returns an error object, handle it
         if (result?.error) throw result.error;
-
-        // Show modal popup
         setShowModal(true);
       } else {
         await signIn(email, password);
         navigate('/dashboard');
       }
     } catch (error: any) {
-      // Improved error message extraction
       const message = error.message || (error.toString().includes('auth') ? 'Invalid email or password.' : 'An unexpected error occurred.');
       setError(message);
     } finally {
@@ -42,25 +38,24 @@ const Auth: React.FC = () => {
     }
   };
 
-  // Handle close button click
   const handleClose = () => {
-    navigate('/'); // Navigate to home page
+    navigate('/');
   };
 
-  // Handle modal close
   const handleModalClose = () => {
     setShowModal(false);
     setIsSignUp(false);
   };
 
+  // Toggle password visibility
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
-    // 1. Sleek Background (Dark Mode Aesthetic)
     <div className="min-h-screen bg-gray-900 flex items-center justify-center px-4 py-8 md:py-16">
-
-      {/* 2. Modern Card Container with Close Button */}
       <div className="relative max-w-md w-full bg-gray-800 rounded-xl shadow-2xl border border-gray-700 p-6 sm:p-10 transition-all duration-500">
-
-        {/* 🔴 NEW: Cross Button - Top Right Corner */}
+        {/* Cross Button */}
         <button
           onClick={handleClose}
           className="absolute -top-3 -right-3 w-8 h-8 flex items-center justify-center bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white rounded-full border border-gray-600 shadow-lg transition-all duration-200 z-10"
@@ -71,14 +66,11 @@ const Auth: React.FC = () => {
         </button>
 
         <div className="text-center mb-8">
-          {/* Logo with Tech Gradient */}
           <div className="flex justify-center mb-4">
             <div className="p-3 rounded-xl bg-gradient-to-r from-teal-400 to-cyan-300 shadow-xl">
               <BarChart3 className="h-8 w-8 text-gray-900" />
             </div>
           </div>
-
-          {/* Professional Headings */}
           <h2 className="text-3xl font-bold text-gray-100">
             {isSignUp ? 'Join DevScore' : 'Welcome Back'}
           </h2>
@@ -89,16 +81,13 @@ const Auth: React.FC = () => {
           </p>
         </div>
 
-        {/* Error Notification (Better Styling) */}
         {error && (
           <div className="mb-6 p-4 bg-red-900/40 border border-red-700 rounded-lg text-red-300 text-sm shadow-inner">
             <span className="font-medium">Error:</span> {error}
           </div>
         )}
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
-
           {/* Email Input */}
           <div>
             <label
@@ -115,14 +104,13 @@ const Auth: React.FC = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                // 3. Modern Input Style
                 className="w-full pl-11 pr-4 py-3 bg-gray-700 text-gray-100 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-500 transition-colors text-base"
                 placeholder="you@example.com"
               />
             </div>
           </div>
 
-          {/* Password Input */}
+          {/* Password Input with Eye Toggle */}
           <div>
             <label
               htmlFor="password"
@@ -134,25 +122,59 @@ const Auth: React.FC = () => {
               <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-teal-400" />
               <input
                 id="password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-11 pr-4 py-3 bg-gray-700 text-gray-100 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-500 transition-colors text-base"
+                className="w-full pl-11 pr-12 py-3 bg-gray-700 text-gray-100 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-500 transition-colors text-base"
                 placeholder="Minimum 6 characters"
                 minLength={6}
               />
+              {/* Eye Toggle Button */}
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                aria-pressed={showPassword}
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    togglePasswordVisibility();
+                  }
+                }}
+              >
+                {showPassword ? (
+                  <EyeOff className="h-5 w-5 text-gray-400 hover:text-teal-400 transition-colors" />
+                ) : (
+                  <Eye className="h-5 w-5 text-gray-400 hover:text-teal-400 transition-colors" />
+                )}
+              </button>
+            </div>
+            {/* Password visibility hint */}
+            <div className="mt-1 text-xs text-gray-500 flex items-center">
+              {showPassword ? (
+                <>
+                  <Eye className="h-3 w-3 mr-1" />
+                  Password is visible
+                </>
+              ) : (
+                <>
+                  <EyeOff className="h-3 w-3 mr-1" />
+                  Click eye icon to show password
+                </>
+              )}
             </div>
           </div>
 
-          {/* Submit Button (Tech Gradient) */}
+          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
             className="w-full bg-gradient-to-r from-teal-500 to-cyan-500 text-gray-900 py-3 px-4 rounded-lg font-semibold shadow-lg hover:shadow-xl hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-teal-500/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center text-lg"
           >
             {loading ? (
-              // Enhanced Loading Spinner
               <div className="flex items-center space-x-2">
                 <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-r-2 border-gray-900"></div>
                 <span>Processing...</span>
@@ -173,6 +195,8 @@ const Auth: React.FC = () => {
               setIsSignUp(!isSignUp);
               setError('');
               setShowModal(false);
+              // Reset password visibility when switching modes
+              setShowPassword(false);
             }}
             className="text-sm font-medium text-teal-400 hover:text-teal-300 transition-colors"
           >
@@ -183,12 +207,10 @@ const Auth: React.FC = () => {
         </div>
       </div>
 
-      {/* Modal popup for signup confirmation (Sleek Styling) */}
+      {/* Modal popup */}
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50 p-4">
           <div className="relative bg-gray-800 p-8 rounded-xl shadow-2xl max-w-sm text-center border border-gray-700">
-            
-            {/* 🔴 NEW: Modal Close Button */}
             <button
               onClick={handleModalClose}
               className="absolute -top-3 -right-3 w-8 h-8 flex items-center justify-center bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white rounded-full border border-gray-600 shadow-lg transition-all duration-200"

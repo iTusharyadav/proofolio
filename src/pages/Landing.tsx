@@ -58,6 +58,44 @@ const FAQItem: React.FC<{ question: string; answer: string; isDark: boolean }> =
   );
 };
 
+// Company logos slider component
+const CompanyLogosSlider: React.FC<{ isDark: boolean }> = ({ isDark }) => {
+  const companies = [
+    { name: "Meta" },
+    { name: "Amazon" },
+    { name: "Google" },
+    { name: "Stripe" },
+    { name: "OpenAI" },
+    { name: "Netflix" },
+  ];
+
+  // Duplicate the array to create seamless infinite loop
+  const duplicatedCompanies = [...companies, ...companies];
+
+  return (
+    <div className="relative w-full overflow-hidden py-8">
+      {/* Gradient fade effects on edges */}
+      <div className="absolute left-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-r from-gray-900/90 to-transparent pointer-events-none"></div>
+      <div className="absolute right-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-l from-gray-900/90 to-transparent pointer-events-none"></div>
+      
+      <div className="animate-infinite-scroll flex space-x-8">
+        {duplicatedCompanies.map((company, index) => (
+          <div
+            key={`${company.name}-${index}`}
+            className={`flex-shrink-0 px-6 py-4 rounded-xl ${
+              isDark ? "glass" : "bg-white"
+            } flex justify-center items-center h-16 opacity-70 hover:opacity-100 transition-all duration-300 hover:scale-105`}
+          >
+            <span className={`text-2xl font-bold ${isDark ? "text-gray-300" : "text-gray-600"}`}>
+              {company.name}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const Landing: React.FC = () => {
   const { user } = useAuth();
   // theme state (persisted)
@@ -251,6 +289,36 @@ const Landing: React.FC = () => {
     /* Card glow on hover (dark mode only) */
     .card-glow-hover:hover {
         box-shadow: 0 0 40px rgba(52, 211, 163, 0.15), 0 0 10px rgba(52, 211, 163, 0.1);
+    }
+
+    /* Infinite scroll animation */
+    @keyframes infinite-scroll {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(calc(-100% / 2));
+      }
+    }
+    
+    .animate-infinite-scroll {
+      animation: infinite-scroll 25s linear infinite;
+      width: fit-content;
+      display: flex;
+    }
+    
+    /* Pause animation on hover */
+    .animate-infinite-scroll:hover {
+      animation-play-state: paused;
+    }
+    
+    /* Adjust for light mode gradient */
+    .light .absolute.left-0 {
+      background: linear-gradient(to right, white, transparent);
+    }
+    
+    .light .absolute.right-0 {
+      background: linear-gradient(to left, white, transparent);
     }
   `;
 
@@ -1321,7 +1389,7 @@ const Landing: React.FC = () => {
           </div>
         </section>
 
-        {/* TRUSTED BY DEVELOPERS WORLDWIDE */}
+        {/* TRUSTED BY DEVELOPERS WORLDWIDE - ANIMATED SLIDER */}
         <section
           id="trusted"
           className="py-20 lg:py-24 fade-in"
@@ -1331,50 +1399,7 @@ const Landing: React.FC = () => {
             <h2 className={`text-3xl md:text-4xl font-semibold mb-12 ${t.heading}`}>
               Trusted by developers worldwide
             </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8 items-center justify-center">
-              <div
-                className={`p-4 rounded-xl ${
-                  isDark ? "glass" : "bg-white"
-                } flex justify-center items-center h-16 opacity-70 hover:opacity-100 transition duration-300`}
-              >
-                <span className={`text-2xl font-bold ${t.muted}`}>Meta</span>
-              </div>
-              <div
-                className={`p-4 rounded-xl ${
-                  isDark ? "glass" : "bg-white"
-                } flex justify-center items-center h-16 opacity-70 hover:opacity-100 transition duration-300`}
-              >
-                <span className={`text-2xl font-bold ${t.muted}`}>Amazon</span>
-              </div>
-              <div
-                className={`p-4 rounded-xl ${
-                  isDark ? "glass" : "bg-white"
-                } flex justify-center items-center h-16 opacity-70 hover:opacity-100 transition duration-300`}
-              >
-                <span className={`text-2xl font-bold ${t.muted}`}>Google</span>
-              </div>
-              <div
-                className={`p-4 rounded-xl ${
-                  isDark ? "glass" : "bg-white"
-                } flex justify-center items-center h-16 opacity-70 hover:opacity-100 transition duration-300`}
-              >
-                <span className={`text-2xl font-bold ${t.muted}`}>Stripe</span>
-              </div>
-              <div
-                className={`p-4 rounded-xl ${
-                  isDark ? "glass" : "bg-white"
-                } flex justify-center items-center h-16 opacity-70 hover:opacity-100 transition duration-300`}
-              >
-                <span className={`text-2xl font-bold ${t.muted}`}>OpenAI</span>
-              </div>
-              <div
-                className={`p-4 rounded-xl ${
-                  isDark ? "glass" : "bg-white"
-                } flex justify-center items-center h-16 opacity-70 hover:opacity-100 transition duration-300`}
-              >
-                <span className={`text-2xl font-bold ${t.muted}`}>Netflix</span>
-              </div>
-            </div>
+            <CompanyLogosSlider isDark={isDark} />
           </div>
         </section>
 

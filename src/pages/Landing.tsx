@@ -1201,17 +1201,8 @@ const Landing: React.FC = () => {
 
                 <div className="relative grid grid-cols-1 sm:grid-cols-3 gap-6 mt-10">
                   {/* Animated connector line (Hidden on small screens) */}
-                  <div
-                    className={`absolute top-1/2 left-0 right-0 h-px transform -translate-y-1/2 ${
-                      isDark ? "bg-white/10" : "bg-gray-200"
-                    } hidden sm:block`}
-                  />
-                  <div
-                    className={`absolute top-1/2 left-1/3 right-1/3 h-px transform -translate-y-1/2 ${
-                      isDark ? "bg-teal-400/50" : "bg-teal-500/50"
-                    } z-10 transition-all duration-1000 hidden sm:block`}
-                    style={{ width: "calc(100% / 3)" }}
-                  ></div>
+                  
+                  
 
                   <div className="z-20">
                     <div

@@ -1,0 +1,13 @@
+name: PR Sanity Check
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  sanity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Basic check
+        run: echo "PR is up to date"

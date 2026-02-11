@@ -16,7 +16,7 @@ import {
   Lightbulb,
 } from 'lucide-react';
 import { supabase } from '../utils/supabase';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/common/Navbar';
 
 // --------------------
 // Types
@@ -115,7 +115,7 @@ const Report: React.FC = () => {
   // --------------------
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100">
-      <Navbar showSignOut={false} />
+      <Navbar/>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16">
         {/* Back */}

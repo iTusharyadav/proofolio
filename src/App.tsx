@@ -10,6 +10,7 @@ import Report from './pages/Report';
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { ThemeProvider } from './contexts/ThemeContext';
 
 function AppRoutes() {
   const location = useLocation();
@@ -55,9 +56,11 @@ function AppRoutes() {
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <AppRoutes />
-      </Router>
+      <ThemeProvider>
+        <Router>
+          <AppRoutes />
+        </Router>
+      </ThemeProvider>
     </AuthProvider>
   );
 }

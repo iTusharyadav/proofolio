@@ -131,6 +131,67 @@ Violations may lead to:
 - ⚡ **Supabase Backend** for storing user profiles and reports -->
 ---
 
+## Architecture & Logic Flow
+
+To help contributors understand the "Proof of Work" engine, these diagrams illustrate how data moves through Proofolio.
+
+### System Data Flow
+This diagram shows the acquisition process from external APIs into our AI analysis engine.
+
+```mermaid
+graph LR    
+    subgraph "External Sources"
+    GH[GitHub API]
+    LI[LinkedIn Data]
+    BL[Blog/RSS]
+    end
+
+    subgraph "Proofolio Core"
+    FE[React App]
+    AI[AI Analysis Engine]
+    end
+
+    subgraph "Backend"
+    SB[(Supabase DB)]
+    AU[Supabase Auth]
+    end
+
+    GH & LI & BL --> FE
+    FE <--> AU
+    FE <--> SB
+    SB --> AI
+    AI --> FE
+```
+
+### Authentication Lifecycle
+Proofolio uses Supabase Auth to manage user sessions. Contributors working on protected routes should follow this flow:
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant F as React Frontend
+    participant S as Supabase Auth
+    participant D as Dashboard
+    
+    U->>F: Enter Credentials
+    F->>S: Authenticate Request
+    S-->>F: Return JWT & Session
+    F->>F: Persist Session in Context API
+    F->>D: Grant Access to Protected Data
+```
+
+### Report Generation Pipeline
+How raw data is transformed into a downloadable professional report:
+
+```mermaid
+graph TD
+    Data[Raw User Stats] --> Viz[Recharts Components]
+    Viz --> Canvas[html2canvas Capture]
+    Canvas --> PDF[jsPDF Export]
+    PDF --> Download[Download Performance Report]
+```
+
+---
 ##  Tech Stack
 
 | Layer | Technology |
@@ -142,6 +203,8 @@ Violations may lead to:
 | **PDF Export** | jsPDF + html2canvas |
 | **State Management** | React Context API |
 | **Routing** | React Router DOM |
+| **Diagrams** | Mermaid.js |
+| **Data Viz** | Recharts |
 
 ---
 

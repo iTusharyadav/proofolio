@@ -61,33 +61,33 @@ const FAQItem: React.FC<{ question: string; answer: string; isDark: boolean }> =
 // Company logos slider component
 const CompanyLogosSlider: React.FC<{ isDark: boolean }> = ({ isDark }) => {
   const companies = [
-    { name: "Meta" },
-    { name: "Amazon" },
-    { name: "Google" },
-    { name: "Stripe" },
-    { name: "OpenAI" },
-    { name: "Netflix" },
+    "Meta",
+    "Amazon",
+    "Google",
+    "Stripe",
+    "OpenAI",
+    "Netflix",
   ];
 
-  // Duplicate the array to create seamless infinite loop
-  const duplicatedCompanies = [...companies, ...companies];
+  
 
   return (
-    <div className="relative w-full overflow-hidden py-8">
-      {/* Gradient fade effects on edges */}
-      <div className="absolute left-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-r from-gray-900/90 to-transparent pointer-events-none"></div>
-      <div className="absolute right-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-l from-gray-900/90 to-transparent pointer-events-none"></div>
-      
-      <div className="animate-infinite-scroll flex space-x-8">
-        {duplicatedCompanies.map((company, index) => (
+    <div className="relative w-full overflow-hidden py-12">
+     
+
+      {/* Slider */}
+      <div className="flex w-max animate-logo-scroll">
+        {[...companies, ...companies].map((name, index) => (
           <div
-            key={`${company.name}-${index}`}
-            className={`flex-shrink-0 px-6 py-4 rounded-xl ${
-              isDark ? "glass" : "bg-white"
-            } flex justify-center items-center h-16 opacity-70 hover:opacity-100 transition-all duration-300 hover:scale-105`}
+            key={index}
+            className="flex items-center justify-center min-w-[200px] px-8"
           >
-            <span className={`text-2xl font-bold ${isDark ? "text-gray-300" : "text-gray-600"}`}>
-              {company.name}
+            <span
+              className={`text-xl md:text-2xl font-semibold tracking-wide
+                ${isDark ? "text-slate-400" : "text-slate-600"}
+                hover:text-white transition-colors duration-300`}
+            >
+              {name}
             </span>
           </div>
         ))}
@@ -95,6 +95,7 @@ const CompanyLogosSlider: React.FC<{ isDark: boolean }> = ({ isDark }) => {
     </div>
   );
 };
+
 
 const Landing: React.FC = () => {
   const { user } = useAuth();
@@ -320,6 +321,19 @@ const Landing: React.FC = () => {
     .light .absolute.right-0 {
       background: linear-gradient(to left, white, transparent);
     }
+
+    @keyframes logo-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-logo-scroll {
+  animation: logo-scroll 25s linear infinite;
+}
   `;
 
   const isDark = theme === "dark";
@@ -1201,17 +1215,8 @@ const Landing: React.FC = () => {
 
                 <div className="relative grid grid-cols-1 sm:grid-cols-3 gap-6 mt-10">
                   {/* Animated connector line (Hidden on small screens) */}
-                  <div
-                    className={`absolute top-1/2 left-0 right-0 h-px transform -translate-y-1/2 ${
-                      isDark ? "bg-white/10" : "bg-gray-200"
-                    } hidden sm:block`}
-                  />
-                  <div
-                    className={`absolute top-1/2 left-1/3 right-1/3 h-px transform -translate-y-1/2 ${
-                      isDark ? "bg-teal-400/50" : "bg-teal-500/50"
-                    } z-10 transition-all duration-1000 hidden sm:block`}
-                    style={{ width: "calc(100% / 3)" }}
-                  ></div>
+                  
+                  
 
                   <div className="z-20">
                     <div

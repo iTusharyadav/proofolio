@@ -16,7 +16,9 @@ import {
     Cpu,
     Bookmark,
     Globe,
-    Code
+    Code,
+    Trophy,
+    Activity
 } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 
@@ -304,6 +306,56 @@ const About: React.FC = () => {
                                             <div className={`h-2 w-2/3 ${isDark ? "bg-white/5" : "bg-gray-100"} rounded-full`}></div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 gap-12 items-start" data-aos="fade-up">
+                            <div className={`order-2 md:order-1 p-8 rounded-[2rem] border ${t.border} ${t.cardBg} shadow-xl relative overflow-hidden group`}>
+                                <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                                    <Trophy className="w-24 h-24 text-orange-400 rotate-12" />
+                                </div>
+                                <div className="space-y-6 relative z-10">
+                                    <div className="flex justify-between items-center mb-4">
+                                        <div className={`p-3 rounded-xl ${isDark ? "bg-orange-500/20" : "bg-orange-50"}`}>
+                                            <Zap className="w-6 h-6 text-orange-400" />
+                                        </div>
+                                        <div className="text-right">
+                                            <div className="text-orange-400 text-xs font-bold tracking-widest uppercase">Rank Level</div>
+                                            <div className={`text-sm font-bold ${t.heading}`}>Guardian</div>
+                                        </div>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div className={`p-4 rounded-2xl ${isDark ? "bg-white/5" : "bg-gray-50"} border ${t.border}`}>
+                                            <div className="text-orange-500 font-black text-xl">450+</div>
+                                            <div className={`text-[10px] uppercase font-bold tracking-tighter ${t.muted}`}>Solved</div>
+                                        </div>
+                                        <div className={`p-4 rounded-2xl ${isDark ? "bg-white/5" : "bg-gray-50"} border ${t.border}`}>
+                                            <div className="text-orange-500 font-black text-xl">Top 5%</div>
+                                            <div className={`text-[10px] uppercase font-bold tracking-tighter ${t.muted}`}>Global Rank</div>
+                                        </div>
+                                    </div>
+                                    <div className={`mt-2 pt-6 border-t ${t.border}`}>
+                                        <div className="flex justify-between items-center mb-3">
+                                            <span className={`text-xs ${t.muted}`}>Consistency Streak</span>
+                                            <span className="text-orange-400 font-bold text-xs">12 Days</span>
+                                        </div>
+                                        <div className="flex gap-1 justify-between">
+                                            {[0.2, 0.4, 0.8, 0.9, 0.3, 1, 0.7, 0.9, 0.2, 0.5, 0.8, 1].map((o, i) => (
+                                                <div key={i} className="w-4 h-4 rounded-sm bg-orange-500" style={{ opacity: o }}></div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="order-1 md:order-2">
+                                <h2 className={`text-3xl font-black mb-6 ${t.heading}`}>Algorithmic Proficiency</h2>
+                                <p className={`${t.sub} mb-6`}>
+                                    Consistency and problem-solving. We track your activity across LeetCode, HackerRank, and other coding platforms to measure your technical depth, persistence, and ability to tackle complex logic.
+                                </p>
+                                <div className="flex items-center gap-3 text-orange-500 font-bold">
+                                    <Activity className="h-5 w-5" />
+                                    <span>Competitive Coding Analysis</span>
                                 </div>
                             </div>
                         </div>

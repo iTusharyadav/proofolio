@@ -9,6 +9,8 @@ import About from './pages/About';
 import Auth from './pages/Auth';
 import Dashboard from './pages/Dashboard';
 import Report from './pages/Report';
+import Contributors from './pages/Contributors';
+
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -34,6 +36,7 @@ function AppRoutes() {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/about" element={<About />} />
+        <Route path="/contributors" element={<Contributors />} />
         <Route path="/auth" element={<Auth />} />
         <Route
           path="/dashboard"

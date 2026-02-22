@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { 
-  BarChart3, 
-  Github, 
-  Linkedin, 
-  FileText, 
-  Mail, 
-  Heart, 
-  MapPin, 
+import {
+  BarChart3,
+  Github,
+  Linkedin,
+  FileText,
+  Mail,
+  Heart,
+  MapPin,
   Calendar,
   Users,
   Award,
@@ -32,7 +32,7 @@ const Footer: React.FC<FooterProps> = ({ isDark }) => {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
-  
+
   // Theme-aware classes
   const t = {
     heading: isDark ? "text-gray-100" : "text-gray-900",
@@ -52,7 +52,7 @@ const Footer: React.FC<FooterProps> = ({ isDark }) => {
 
   const companyLinks = [
     { name: "About Us", path: "/about" },
-    { name: "Careers", path: "/careers" },
+    { name: "Contributors", path: "/contributors" },
     { name: "Blog", path: "/blog" },
     { name: "Press", path: "/press" },
   ];
@@ -81,7 +81,7 @@ const Footer: React.FC<FooterProps> = ({ isDark }) => {
       console.log("Newsletter subscription:", email);
       setSubscribed(true);
       setEmail("");
-      
+
       // Reset subscription message after 3 seconds
       setTimeout(() => {
         setSubscribed(false);
@@ -99,7 +99,7 @@ const Footer: React.FC<FooterProps> = ({ isDark }) => {
           <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-teal-500/5 rounded-full blur-3xl"></div>
         </>
       )}
-      
+
       {/* Inline styles for animations */}
       <style>
         {`
@@ -209,13 +209,13 @@ const Footer: React.FC<FooterProps> = ({ isDark }) => {
           }
         `}
       </style>
-      
+
       <div className="relative max-w-7xl mx-auto px-6 py-12">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
           {/* Brand Column - Enhanced with animation */}
           <div className="space-y-4">
-            <div 
+            <div
               className="flex items-center gap-3 group cursor-pointer"
               onMouseEnter={() => setHoveredLink("brand")}
               onMouseLeave={() => setHoveredLink(null)}
@@ -250,7 +250,7 @@ const Footer: React.FC<FooterProps> = ({ isDark }) => {
             <p className={`${t.sub} text-sm leading-relaxed transition-all duration-500 ${hoveredLink === "brand" ? "blur-sm opacity-50" : "blur-0 opacity-100"}`}>
               Empowering developers with actionable insights and growth strategies through comprehensive profile analysis.
             </p>
-            
+
             {/* Contact Info with hover effects */}
             <div className="space-y-2 pt-4">
               <div className="flex items-center gap-2 group">
@@ -280,7 +280,7 @@ const Footer: React.FC<FooterProps> = ({ isDark }) => {
             </h3>
             <ul className="space-y-3">
               {quickLinks.map((link, index) => (
-                <li 
+                <li
                   key={index}
                   className="relative overflow-hidden"
                   onMouseEnter={() => setHoveredLink(link.name)}
@@ -355,12 +355,12 @@ const Footer: React.FC<FooterProps> = ({ isDark }) => {
           {/* Company Links Column */}
           <div>
             <h3 className={`${t.heading} font-semibold text-lg mb-4 flex items-center gap-2`}>
-              <span className="w-2 h-2 rounded-full bg-gradient-to-r from-teal-400 to-cyan-300 animate-pulse" style={{animationDelay: "0.2s"}}></span>
+              <span className="w-2 h-2 rounded-full bg-gradient-to-r from-teal-400 to-cyan-300 animate-pulse" style={{ animationDelay: "0.2s" }}></span>
               Company
             </h3>
             <ul className="space-y-3">
               {companyLinks.map((link, index) => (
-                <li 
+                <li
                   key={index}
                   onMouseEnter={() => setHoveredLink(`company-${link.name}`)}
                   onMouseLeave={() => setHoveredLink(null)}
@@ -389,7 +389,7 @@ const Footer: React.FC<FooterProps> = ({ isDark }) => {
                 </li>
               ))}
             </ul>
-            
+
             {/* Social Links with enhanced animations */}
             <div className="mt-8">
               <h4 className={`${t.sub} text-sm font-medium mb-3`}>Connect With Us</h4>
@@ -406,8 +406,8 @@ const Footer: React.FC<FooterProps> = ({ isDark }) => {
                     rel="noopener noreferrer"
                     className={`
                       p-2.5 rounded-xl transition-all duration-500 transform
-                      ${isDark 
-                        ? "bg-gray-800/50 text-gray-300 hover:text-white" 
+                      ${isDark
+                        ? "bg-gray-800/50 text-gray-300 hover:text-white"
                         : "bg-white text-gray-600 hover:text-white border border-gray-200"
                       }
                       hover:scale-110 hover:shadow-2xl hover:-translate-y-1
@@ -429,13 +429,13 @@ const Footer: React.FC<FooterProps> = ({ isDark }) => {
           {/* Newsletter Column with success animation */}
           <div>
             <h3 className={`${t.heading} font-semibold text-lg mb-4 flex items-center gap-2`}>
-              <span className="w-2 h-2 rounded-full bg-gradient-to-r from-teal-400 to-cyan-300 animate-pulse" style={{animationDelay: "0.4s"}}></span>
+              <span className="w-2 h-2 rounded-full bg-gradient-to-r from-teal-400 to-cyan-300 animate-pulse" style={{ animationDelay: "0.4s" }}></span>
               Stay Updated
             </h3>
             <p className={`${t.muted} text-sm mb-4 transition-all duration-500 ${subscribed ? "opacity-0 scale-95" : "opacity-100 scale-100"}`}>
               Get the latest updates on new features and improvements.
             </p>
-            
+
             {subscribed ? (
               <div className="animate-fade-in-up">
                 <div className={`p-4 rounded-xl ${isDark ? "bg-teal-500/10 border border-teal-500/20" : "bg-teal-50 border border-teal-200"}`}>
@@ -459,8 +459,8 @@ const Footer: React.FC<FooterProps> = ({ isDark }) => {
                     placeholder="Your email address"
                     className={`
                       w-full px-4 py-2.5 rounded-xl text-sm
-                      ${isDark 
-                        ? "bg-gray-800/50 border border-white/10 text-white placeholder-gray-400" 
+                      ${isDark
+                        ? "bg-gray-800/50 border border-white/10 text-white placeholder-gray-400"
                         : "bg-white border border-gray-300 text-gray-900 placeholder-gray-500"
                       }
                       focus:outline-none focus:ring-2 focus:ring-teal-400/50 focus:border-transparent
@@ -508,17 +508,17 @@ const Footer: React.FC<FooterProps> = ({ isDark }) => {
             <span className="hidden md:inline">•</span>
             <br className="md:hidden" />
             <span className="flex items-center">
-              Made with 
-              <Heart className="inline-block w-3.5 h-3.5 text-red-400 mx-1.5 animate-heartbeat" /> 
+              Made with
+              <Heart className="inline-block w-3.5 h-3.5 text-red-400 mx-1.5 animate-heartbeat" />
               for developers worldwide.
             </span>
           </div>
-          
+
           <div className="flex flex-wrap gap-4 md:gap-6 justify-center">
             {legalLinks.map((link, index) => (
-              <a 
+              <a
                 key={index}
-                href={link.path} 
+                href={link.path}
                 className={`
                   ${t.muted} hover:text-teal-400 text-xs transition-all duration-500
                   relative group
@@ -539,10 +539,10 @@ const Footer: React.FC<FooterProps> = ({ isDark }) => {
         {/* Attribution with typing effect */}
         <div className="text-center mt-8 space-y-2">
           <p className={`${t.muted} text-xs animate-typewriter overflow-hidden whitespace-nowrap border-r-2 border-r-teal-400 pr-1`}>
-            DevScore is an open-source project. 
-            <a 
-              href="https://github.com/devscore" 
-              target="_blank" 
+            DevScore is an open-source project.
+            <a
+              href="https://github.com/devscore"
+              target="_blank"
               rel="noopener noreferrer"
               className="text-teal-400 hover:text-teal-300 ml-1 font-medium group"
             >
@@ -559,17 +559,17 @@ const Footer: React.FC<FooterProps> = ({ isDark }) => {
             </span>
             <span>•</span>
             <span className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" style={{animationDelay: "0.1s"}}></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" style={{ animationDelay: "0.1s" }}></span>
               TypeScript
             </span>
             <span>•</span>
             <span className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" style={{animationDelay: "0.2s"}}></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" style={{ animationDelay: "0.2s" }}></span>
               Tailwind CSS
             </span>
             <span>•</span>
             <span className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" style={{animationDelay: "0.3s"}}></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" style={{ animationDelay: "0.3s" }}></span>
               Supabase
             </span>
           </p>
